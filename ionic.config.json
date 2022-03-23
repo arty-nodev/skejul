@@ -1,0 +1,7 @@
+{
+  "name": "skejul",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
