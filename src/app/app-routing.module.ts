@@ -1,20 +1,20 @@
-import { AjustesComponent } from './components/ajustes/ajustes.component';
+import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AjustesComponent } from './backend/ajustes/ajustes.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'home', component: HomeComponent
   },
   {
     path: 'ajustes', component: AjustesComponent
+  },{
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
   }
+
 ];
 
 @NgModule({

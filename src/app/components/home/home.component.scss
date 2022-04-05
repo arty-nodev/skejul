@@ -1,0 +1,10 @@
+.card-name{
+    padding: 10px;
+    ion-button{
+        width: 3.5rem;
+    }
+}
+.item-sliding-active-slide .item{
+    transform: translate3d(150px, 0px, 0px);
+}
+

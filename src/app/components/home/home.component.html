@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let usuario of usuarios" class="card-name">
+    <ion-card-header>
+      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+     
+    
+          <ion-button (click)="callUser(usuario.telefono)" fill="clear">
+            <ion-icon name="call-outline"></ion-icon>
+          </ion-button>
+          <ion-button (click)="onClick()" fill="clear">
+            <ion-icon name="mail-outline"></ion-icon>
+          </ion-button>
+          <ion-button (click)="onClick()" fill="clear">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </ion-button>
+       
+    
+    
+     
+    </ion-card-content>
+  </ion-card>
+</ion-content>
