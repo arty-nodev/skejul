@@ -1,6 +1,16 @@
 <ion-app>
-  <ion-menu side="start" menuId="first" contentId="main">
-    <app-menu></app-menu>
-  </ion-menu>
-  <ion-router-outlet id="main"></ion-router-outlet>
+
+  <ion-split-pane contentId="main">
+    <ion-menu contentId="main">
+      <app-menu></app-menu>
+    </ion-menu>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-router-outlet id="main"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>

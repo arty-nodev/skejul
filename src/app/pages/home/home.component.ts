@@ -21,9 +21,7 @@ export class HomeComponent implements OnInit {
 
   getUsuarios(){
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
-      console.log(res);
-      this.usuarios = res;
-      
+      this.usuarios = res; 
     });
   }
 

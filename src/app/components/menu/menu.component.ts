@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController, PopoverController } from '@ionic/angular';
+import { AuthService } from './../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { PopoverController, MenuController } from '@ionic/angular';
+import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
   selector: 'app-menu',
@@ -9,17 +11,21 @@ import { MenuController, PopoverController } from '@ionic/angular';
 })
 export class MenuComponent {
 
-  constructor(private menu: MenuController) { }
+  constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController) { }
 
 
-
-  openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
+  ngOnInit() {
+    this.menu.swipeGesture(false);
+    this.menu.close();
   }
 
-  openEnd() {
-    this.menu.open('end');
+
+  logout() {
+    this.auth.logout();
+    this.interaction.presentToast("Sesión cerrada");
+    this.router.navigate(['login'])
+    this.menu.close();
+    
   }
 
 }

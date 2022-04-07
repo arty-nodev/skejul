@@ -1,13 +1,18 @@
+<ion-list>
+  <ion-list-header>
+    <strong>Menu</strong>
+  </ion-list-header>
+  <ion-item detail="true" [routerLink]="['/home']">
+    <ion-label>Inicio</ion-label>
+    <ion-icon slot="start" name="home-outline"></ion-icon>
+  </ion-item>
+  <ion-item detail="true" [routerLink]="['/ajustes']">
+    <ion-label>Ajustes</ion-label>
+    <ion-icon slot="start" name="settings-outline"></ion-icon>
+  </ion-item>
+  <ion-item detail="true" (click)="logout()">
+    <ion-label>Salir</ion-label>
+    <ion-icon slot="start" name="log-out-outline"></ion-icon>
+  </ion-item>
 
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Menú</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-item detail="true" [routerLink]="['/home']" >
-  <ion-label>Inicio</ion-label>
-</ion-item>
-<ion-item detail="true" [routerLink]="['/ajustes']">
-  <ion-label>Ajustes</ion-label>
-</ion-item>
+</ion-list>

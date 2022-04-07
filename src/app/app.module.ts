@@ -1,5 +1,6 @@
+import { LoginComponent } from './pages/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +20,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AjustesComponent } from './backend/ajustes/ajustes.component';
 
 @NgModule({
-  declarations: [AppComponent, AjustesComponent, MenuComponent, HomeComponent],
+  declarations: [AppComponent, AjustesComponent, MenuComponent, HomeComponent, LoginComponent],
   entryComponents: [],
   imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber],
