@@ -1,3 +1,4 @@
+import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from './../../services/auth.service';
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private auth: AuthService, private interaction: InteractionService, private router: Router) { }
 
   ngOnInit() {}
+
 
   async login(){
    await this.interaction.presentLoading("Iniciando sesión");

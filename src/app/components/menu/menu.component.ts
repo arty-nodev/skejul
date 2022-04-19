@@ -1,3 +1,5 @@
+import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { FirestoreService } from 'src/app/services/firestore.service';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,7 +13,26 @@ import { InteractionService } from 'src/app/services/interaction.service';
 })
 export class MenuComponent {
 
-  constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController) { }
+  login: boolean = false;
+  cargo: String[] = ['Auxiliar', 'Encargado', 'Gerente'];
+  rol: string = null;
+
+  constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
+    this.auth.estadoUsuario().subscribe(res => {
+      if (res) {
+        console.log('logged');
+        this.login = true;
+        this.getCargo(res.uid);
+        console.log(res.uid);
+
+
+      }
+      else {
+        console.log('not logged');
+        this.login = false;
+      }
+    })
+  }
 
 
   ngOnInit() {
@@ -25,7 +46,20 @@ export class MenuComponent {
     this.interaction.presentToast("Sesión cerrada");
     this.router.navigate(['login'])
     this.menu.close();
-    
+
   }
 
+  getCargo(uid: string) {
+    const path = 'usuarios';
+    const id = uid;
+    this.firestore.getDoc<Usuario>(path, id).subscribe(res => {
+      if (res) {
+        this.rol = res.cargo;
+        console.log(res.cargo);
+        
+      }
+    })
+
+  }
+ 
 }

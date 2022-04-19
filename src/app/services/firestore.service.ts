@@ -25,6 +25,11 @@ export class FirestoreService {
     return collection.valueChanges();
   }
 
+  //Recogemos un documento
+  getDoc<type>(path:string, uid:string){
+    return this.firestore.collection(path).doc<type>(uid).valueChanges();
+  }
+
 
   
 }

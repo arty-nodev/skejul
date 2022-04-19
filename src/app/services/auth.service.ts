@@ -20,4 +20,8 @@ export class AuthService {
   registrarUsuario(datos: Usuario){
     return this.auth.createUserWithEmailAndPassword(datos.correo, datos.password);
   }
+
+  estadoUsuario(){
+    return this.auth.authState;
+  }
 }

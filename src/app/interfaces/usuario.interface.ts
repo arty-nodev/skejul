@@ -8,4 +8,5 @@ export interface Usuario {
     uid: string;
     cargo: string;
     horarios: [];
+    id_local: number;
 }
