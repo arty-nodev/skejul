@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder } from '@angular/forms';
+import { LoginComponent } from 'src/app/pages/login/login.component';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-ajustes',
@@ -25,9 +27,16 @@ export class AjustesComponent implements OnInit {
     id_local: null
   }
 
-  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService) { }
+  correo: string = '';
+  psw: string = '';
 
-  ngOnInit() { }
+
+  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private storage: StorageService) {
+  }
+
+  ngOnInit() {
+
+  }
 
 
 
@@ -40,19 +49,19 @@ export class AjustesComponent implements OnInit {
     });
 
     console.log(resgister);
-    
+
     if (resgister) {
       const path = 'usuarios';
       const uid = resgister.user.uid;
       console.log(uid);
-      
+
       this.data.uid = uid;
       this.data.password = null;
       await this.database.createDoc(this.data, path, uid).then(() => {
+        this.login();
         this.interaction.presentToast('Usuario creado con éxito');
         this.interaction.closeLoading();
-      
-        
+
       });
 
       //Buscar metodo refactor
@@ -63,10 +72,33 @@ export class AjustesComponent implements OnInit {
       this.data.correo = null;
       this.data.id_usuaro = null;
       this.data.password = null;
+
+      
     }
 
   }
 
+  async login() {
 
+    this.auth.logout();
+    const data = await this.storage.get('info');
+    
+    if (data != null) {
+      this.correo = data[0].correo;
+      this.psw = data[0].password;
+      console.log(this.correo, '', this.psw);
+      
+      const res = await this.auth.login(this.correo, this.psw).catch(error => {
+        console.log("Error");
+        
+      })
+      
+      if (res) {
+        console.log("respuesta ->", res);
+        window.top.location.reload();
+      }
+    }
+
+  }
 
 }

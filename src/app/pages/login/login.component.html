@@ -7,14 +7,14 @@
 <ion-content>
   <ion-item>
     <ion-label>Correo</ion-label>
-    <ion-input type="email" [(ngModel)]="dataLogin.correo"></ion-input>
+    <ion-input type="email" [(ngModel)]="correo"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Contraseña</ion-label>
-    <ion-input type="password"  [(ngModel)]="dataLogin.password"></ion-input>
+    <ion-input type="password"  [(ngModel)]="password"></ion-input>
   </ion-item>
 
-  <ion-button (click)="login()" expand="block" fill="clear" shape="round">
+  <ion-button (click)="login(correo,password)" expand="block" fill="clear" shape="round">
     Iniciar sesión
   </ion-button>
 </ion-content>
