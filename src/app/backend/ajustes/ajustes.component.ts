@@ -32,6 +32,16 @@ export class AjustesComponent implements OnInit {
 
 
   constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private storage: StorageService) {
+    this.auth.estadoUsuario().subscribe(res => {
+      if (res) {
+        this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
+          if (res) {
+            this.data.id_local = res.id_local;
+          }
+        })
+      }
+    })
+   
   }
 
   ngOnInit() {
@@ -54,14 +64,11 @@ export class AjustesComponent implements OnInit {
       const path = 'usuarios';
       const uid = resgister.user.uid;
       console.log(uid);
-
+     
       this.data.uid = uid;
       this.data.password = null;
       await this.database.createDoc(this.data, path, uid).then(() => {
         this.login();
-        this.interaction.presentToast('Usuario creado con éxito');
-        this.interaction.closeLoading();
-
       });
 
       //Buscar metodo refactor
@@ -96,6 +103,8 @@ export class AjustesComponent implements OnInit {
       if (res) {
         console.log("respuesta ->", res);
         window.top.location.reload();
+        this.interaction.presentToast('Usuario creado con éxito');
+        this.interaction.closeLoading();
       }
     }
 

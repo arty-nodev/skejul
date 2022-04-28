@@ -13,31 +13,30 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class HomeComponent implements OnInit {
 
- 
+
   usuarios: Usuario[];
   correo: string = '';
   psw: string = '';
 
-  constructor(private database: FirestoreService, private callNumber: CallNumber, public route : ActivatedRoute, private storage: StorageService) { }
+  constructor(private database: FirestoreService, private callNumber: CallNumber, public route: ActivatedRoute, private storage: StorageService) { }
 
   ngOnInit() {
     this.usuarios = [];
     this.getUsuarios();
-    
+
   }
 
-  getUsuarios(){
-   
+  getUsuarios() {
+
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
-      this.usuarios = res; 
-      
+      this.usuarios = res;
     });
   }
 
-  async callUser(data){
-   await this.callNumber.callNumber(data, true)
-    .then(res => console.log('Launched dialer!', res))
-    .catch(err => console.log('Error launching dialer', err));
+  async callUser(data) {
+    await this.callNumber.callNumber(data, true)
+      .then(res => console.log('Launched dialer!', res))
+      .catch(err => console.log('Error launching dialer', err));
 
   }
 
