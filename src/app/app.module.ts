@@ -17,11 +17,12 @@ import { AngularFireModule } from "@angular/fire/compat";
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AjustesComponent } from './backend/ajustes/ajustes.component';
+import { RegisterComponent } from './backend/register/register.component';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { EditComponent } from './backend/edit/edit.component';
 
 @NgModule({
-  declarations: [AppComponent, AjustesComponent, MenuComponent, HomeComponent, LoginComponent],
+  declarations: [AppComponent, RegisterComponent, MenuComponent, HomeComponent, LoginComponent, EditComponent],
   entryComponents: [],
   imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule, IonicStorageModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent],

@@ -30,6 +30,24 @@ export class FirestoreService {
     return this.firestore.collection(path).doc<type>(uid).valueChanges();
   }
 
+  editDoc<type>(path:string, uid:string, data:any){
+   return this.firestore
+    .doc(path+'/'+ uid)
+    .set({
+      apellidos: data.apellidos,
+      cargo: data.cargo,
+      correo: data.correo,
+      horarios: [],
+      id_local: data.id_local,
+      id_usuario: data.id_usuario,
+      nombre: data.nombre,
+      password: null,
+      telefono: data.telefono})
+    .then(() => {
+      return this.firestore.collection(path).doc<type>(uid).valueChanges();
+    })
+  }
+
 
   
 }

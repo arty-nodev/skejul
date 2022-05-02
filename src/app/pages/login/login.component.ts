@@ -1,5 +1,4 @@
 import { StorageService } from './../../services/storage.service';
-import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from './../../services/auth.service';

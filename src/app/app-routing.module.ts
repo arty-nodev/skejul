@@ -1,7 +1,8 @@
+import { EditComponent } from './backend/edit/edit.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AjustesComponent } from './backend/ajustes/ajustes.component';
+import { RegisterComponent } from './backend/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
@@ -9,9 +10,12 @@ const routes: Routes = [
     path: 'home', component: HomeComponent
   },
   {
-    path: 'ajustes', component: AjustesComponent
+    path: 'register', component: RegisterComponent
   },{
     path: 'login', component: LoginComponent
+  },
+  {
+    path: 'edit', component: EditComponent
   },{
     path: '',
     redirectTo: 'login',

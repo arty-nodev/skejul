@@ -1,10 +1,11 @@
-import { LoginComponent } from 'src/app/pages/login/login.component';
+import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { CallNumber } from '@ionic-native/call-number/ngx'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
+import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
   selector: 'app-home',
@@ -15,15 +16,13 @@ export class HomeComponent implements OnInit {
 
 
   usuarios: Usuario[];
-  correo: string = '';
-  psw: string = '';
-
-  constructor(private database: FirestoreService, private callNumber: CallNumber, public route: ActivatedRoute, private storage: StorageService) { }
+ 
+  constructor(private database: FirestoreService, private callNumber: CallNumber, public route: ActivatedRoute, private menu: MenuController, private storage: StorageService, private router: Router, private interaction: InteractionService) { }
 
   ngOnInit() {
     this.usuarios = [];
     this.getUsuarios();
-
+    this.menu.close();
   }
 
   getUsuarios() {
@@ -38,6 +37,12 @@ export class HomeComponent implements OnInit {
       .then(res => console.log('Launched dialer!', res))
       .catch(err => console.log('Error launching dialer', err));
 
+  }
+
+  editUser(index){
+    this.storage.set('user', this.usuarios[index]);
+    this.router.navigate(['edit']);
+   
   }
 
 }

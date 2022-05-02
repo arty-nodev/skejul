@@ -1,18 +1,17 @@
+import { MenuController } from '@ionic/angular';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
-import { FirestoreService } from './../../services/firestore.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { Component, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { FormBuilder } from '@angular/forms';
-import { LoginComponent } from 'src/app/pages/login/login.component';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
-  selector: 'app-ajustes',
-  templateUrl: './ajustes.component.html',
-  styleUrls: ['./ajustes.component.scss'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
 })
-export class AjustesComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
   data: Usuario = {
     nombre: null,
@@ -20,7 +19,7 @@ export class AjustesComponent implements OnInit {
     correo: null,
     password: null,
     telefono: null,
-    id_usuaro: null,
+    id_usuario: null,
     uid: null,
     cargo: null,
     horarios: [],
@@ -31,7 +30,7 @@ export class AjustesComponent implements OnInit {
   psw: string = '';
 
 
-  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private storage: StorageService) {
+  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private storage: StorageService, private menu: MenuController) {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -41,11 +40,11 @@ export class AjustesComponent implements OnInit {
         })
       }
     })
-   
+
   }
 
   ngOnInit() {
-
+    this.menu.close();
   }
 
 
@@ -64,7 +63,7 @@ export class AjustesComponent implements OnInit {
       const path = 'usuarios';
       const uid = resgister.user.uid;
       console.log(uid);
-     
+
       this.data.uid = uid;
       this.data.password = null;
       await this.database.createDoc(this.data, path, uid).then(() => {
@@ -77,10 +76,10 @@ export class AjustesComponent implements OnInit {
       this.data.telefono = null;
       this.data.cargo = null;
       this.data.correo = null;
-      this.data.id_usuaro = null;
+      this.data.id_usuario = null;
       this.data.password = null;
 
-      
+
     }
 
   }
@@ -89,17 +88,17 @@ export class AjustesComponent implements OnInit {
 
     this.auth.logout();
     const data = await this.storage.get('info');
-    
+
     if (data != null) {
       this.correo = data[0].correo;
       this.psw = data[0].password;
       console.log(this.correo, '', this.psw);
-      
+
       const res = await this.auth.login(this.correo, this.psw).catch(error => {
         console.log("Error");
-        
+
       })
-      
+
       if (res) {
         console.log("respuesta ->", res);
         window.top.location.reload();

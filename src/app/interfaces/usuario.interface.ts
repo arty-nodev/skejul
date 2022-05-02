@@ -4,7 +4,7 @@ export interface Usuario {
     correo: string;
     password: string;
     telefono: number;
-    id_usuaro: number;
+    id_usuario: number;
     uid: string;
     cargo: string;
     horarios: [];

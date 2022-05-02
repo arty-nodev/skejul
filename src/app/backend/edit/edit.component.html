@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+   
+      <ion-item>
+        <ion-label>Nombre: </ion-label>
+        <ion-input type="text" [(ngModel)]="data.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Apellidos: </ion-label>
+        <ion-input type="text" [(ngModel)]="data.apellidos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Correo: </ion-label>
+        <ion-input type="text" [(ngModel)]="data.correo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Contraseña: </ion-label>
+        <ion-input type="password" [(ngModel)]="data.password"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Teléfono: </ion-label>
+        <ion-input type="number" [(ngModel)]="data.telefono"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>ID Usuario: </ion-label>
+        <ion-input type="number" [(ngModel)]="data.id_usuario"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cargo: </ion-label>
+        <ion-input type="text" [(ngModel)]="data.cargo"></ion-input>
+      </ion-item>
+  
+    </ion-card>
+    <ion-button (click)="editarUsuario()" expand="block" fill="clear" shape="round">
+      Editar usuario
+    </ion-button>
+
+
+</ion-content>
+
+
+
+
+

@@ -6,8 +6,8 @@
     <ion-label>Inicio</ion-label>
     <ion-icon slot="start" name="home-outline"></ion-icon>
   </ion-item>
-  <ion-item detail="true" *ngIf="rol==='Gerente'" [routerLink]="['/ajustes']">
-    <ion-label>Ajustes</ion-label>
+  <ion-item detail="true" *ngIf="rol==='Gerente'" [routerLink]="['/register']">
+    <ion-label>Nuevo usuario</ion-label>
     <ion-icon slot="start" name="settings-outline"></ion-icon>
   </ion-item>
   <ion-item detail="true" (click)="logout()">
