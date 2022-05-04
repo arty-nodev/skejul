@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ex-Trabajadores</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let usuario of usuarios; index as i" class="card-name">
+    <ion-card-header>
+      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button (click)="acceptUser(i)">
+        Habilitar de nuevo
+        <ion-icon slot="end" name="lock-open-outline"></ion-icon>
+      </ion-button>      
+    </ion-card-content>
+  </ion-card>
+</ion-content>

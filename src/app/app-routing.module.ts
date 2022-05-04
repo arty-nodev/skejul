@@ -1,3 +1,4 @@
+import { ExworkersComponent } from './pages/exworkers/exworkers.component';
 import { EditComponent } from './backend/edit/edit.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NgModule } from '@angular/core';
@@ -16,6 +17,9 @@ const routes: Routes = [
   },
   {
     path: 'edit', component: EditComponent
+  },
+  {
+    path: 'exworkers', component: ExworkersComponent
   },{
     path: '',
     redirectTo: 'login',

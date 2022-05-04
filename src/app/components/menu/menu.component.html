@@ -10,7 +10,11 @@
     <ion-label>Nuevo usuario</ion-label>
     <ion-icon slot="start" name="settings-outline"></ion-icon>
   </ion-item>
-  <ion-item detail="true" (click)="logout()">
+  <ion-item detail="true" *ngIf="rol==='Gerente'" [routerLink]="['/exworkers']">
+    <ion-label>Ex-Trabajadores</ion-label>
+    <ion-icon slot="start" name="person-remove-outline"></ion-icon>
+  </ion-item>
+  <ion-item detail="true" (click)="logout()" >
     <ion-label>Salir</ion-label>
     <ion-icon slot="start" name="log-out-outline"></ion-icon>
   </ion-item>

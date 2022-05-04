@@ -2,6 +2,8 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,5 +25,9 @@ export class AuthService {
   
   estadoUsuario(){
     return this.auth.authState;
+  }
+
+  updateEmail(uid:string){
+    //Update email or password first time login
   }
 }

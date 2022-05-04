@@ -21,7 +21,13 @@ export class FirestoreService {
   
   //Recogemos una colección
   getCollection<type>(path: string){
-    const collection = this.firestore.collection<type>(path);
+    const collection = this.firestore.collection<type>(path, ref => ref.where("trabaja", "==", true));
+    return collection.valueChanges();
+  }
+
+   //Recogemos una colección de ex-trabajadores
+   getExWorkers<type>(path: string){
+    const collection = this.firestore.collection<type>(path, ref => ref.where("trabaja", "==", false));
     return collection.valueChanges();
   }
 
@@ -32,8 +38,9 @@ export class FirestoreService {
 
   editDoc<type>(path:string, uid:string, data:any){
    return this.firestore
-    .doc(path+'/'+ uid)
-    .set({
+    .collection(path)
+    .doc(uid)
+    .update({
       apellidos: data.apellidos,
       cargo: data.cargo,
       correo: data.correo,
@@ -48,6 +55,15 @@ export class FirestoreService {
     })
   }
 
-
+disableUser<type>(path:string, uid:string, value:boolean){
+  return this.firestore
+    .collection(path)
+    .doc(uid)
+    .update({
+      trabaja: value})
+    .then(() => {
+      return this.firestore.collection(path).doc<type>(uid).valueChanges();
+    })
+}
   
 }

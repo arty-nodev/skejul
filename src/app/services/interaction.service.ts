@@ -1,5 +1,7 @@
+import { FirestoreService } from 'src/app/services/firestore.service';
 import { Injectable } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { Usuario } from '../interfaces/usuario.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +9,9 @@ import { LoadingController, ToastController } from '@ionic/angular';
 export class InteractionService {
 
   loading: any;
+  alert: any;
 
-  constructor(public toastController: ToastController, public loadingController: LoadingController) { }
+  constructor(public toastController: ToastController, public loadingController: LoadingController, public alertController: AlertController, private database: FirestoreService) { }
 
   //Generamos un toast pasándo un mensaje
   async presentToast(mensaje: string) {
@@ -32,8 +35,74 @@ export class InteractionService {
 
   //Cerramos el loading
   async closeLoading(){
-    
     await this.loading.dismiss();
-    
+  }
+
+  async presentAlertConfirm(index) {
+    this.alert = await this.alertController.create({
+      header: 'Dar de baja un usuario',
+      message: 'El usuario será deshabilitado.<br/><strong>¿Desea continuar?</strong>',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'Cancel',
+          id: 'cancel-button',
+          handler: () => {
+            console.log('Cancelado'); 
+          }
+        }, {
+          text: 'Si, continuar',
+          id: 'confirm-button',
+          handler: () => {
+            console.log(index);
+            this.database.disableUser<Usuario>('usuarios', index.uid, false).then(res => {
+              if (res) {
+                console.log(res);
+                this.presentToast('Usuario deshabilitado con éxito');
+              } else {
+                this.presentToast('Algo salió mal');
+              }
+            })
+          }
+        }
+      ]
+    });
+
+    await this.alert.present();
+
+  }
+
+  async presentAlertHabilitar(index) {
+    this.alert = await this.alertController.create({
+      header: 'Dar de alta un usuario',
+      message: 'El usuario será habilitado de nuevo.<br/><strong>¿Desea continuar?</strong>',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'Cancel',
+          id: 'cancel-button',
+          handler: () => {
+            console.log('Cancelado'); 
+          }
+        }, {
+          text: 'Si, continuar',
+          id: 'confirm-button',
+          handler: () => {
+            console.log(index);
+            this.database.disableUser<Usuario>('usuarios', index.uid, true).then(res => {
+              if (res) {
+                console.log(res);
+                this.presentToast('Usuario habilitado con éxito');
+              } else {
+                this.presentToast('Algo salió mal');
+              }
+            })
+          }
+        }
+      ]
+    });
+
+    await this.alert.present();
+
   }
 }

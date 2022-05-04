@@ -1,3 +1,4 @@
+import { ExworkersComponent } from './pages/exworkers/exworkers.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -22,7 +23,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { EditComponent } from './backend/edit/edit.component';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent, MenuComponent, HomeComponent, LoginComponent, EditComponent],
+  declarations: [AppComponent, RegisterComponent, MenuComponent, HomeComponent, LoginComponent, EditComponent, ExworkersComponent],
   entryComponents: [],
   imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule, IonicStorageModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent],

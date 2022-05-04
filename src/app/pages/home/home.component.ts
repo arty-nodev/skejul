@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
   }
 
   getUsuarios() {
-
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
       this.usuarios = res;
     });
@@ -43,6 +42,10 @@ export class HomeComponent implements OnInit {
     this.storage.set('user', this.usuarios[index]);
     this.router.navigate(['edit']);
    
+  }
+
+  removeUser(index){
+    this.interaction.presentAlertConfirm(this.usuarios[index]);
   }
 
 }
