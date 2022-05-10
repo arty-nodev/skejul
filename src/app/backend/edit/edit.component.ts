@@ -23,7 +23,8 @@ export class EditComponent implements OnInit {
     uid: null,
     cargo: null,
     horarios: [],
-    id_local: null
+    id_local: null,
+    trabaja: null
   }
 
   user: any;
@@ -60,6 +61,7 @@ export class EditComponent implements OnInit {
     this.data.nombre = this.user.nombre;
     this.data.telefono = this.user.telefono;
     this.data.uid = this.user.uid;
+    this.data.trabaja = this.user.trabaja;
 
   }
 

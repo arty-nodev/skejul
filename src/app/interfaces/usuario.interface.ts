@@ -9,4 +9,5 @@ export interface Usuario {
     cargo: string;
     horarios: [];
     id_local: number;
+    trabaja: boolean;
 }

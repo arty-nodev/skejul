@@ -9,10 +9,10 @@ import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './admin-home.component.html',
+  styleUrls: ['./admin-home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class AdminHomeComponent implements OnInit {
 
 
   usuarios: Usuario[];

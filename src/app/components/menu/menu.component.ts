@@ -20,13 +20,17 @@ export class MenuComponent {
 
 
   constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
-
+    this.getEstado();
   }
 
 
   ngOnInit() {
     this.menu.swipeGesture(false);
     this.menu.close();
+
+  }
+
+  getEstado() {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.login = true;
@@ -35,21 +39,16 @@ export class MenuComponent {
       }
       else {
         console.log('not logged');
+        this.router.navigate(['login'])
         this.login = false;
-        
+
       }
     })
-
   }
-
-
   logout() {
     this.rol = null;
     this.auth.logout();
     this.interaction.presentToast("Sesión cerrada");
-    this.router.navigate(['login'])
-  
-
   }
 
   getCargo(uid: string) {
@@ -57,7 +56,7 @@ export class MenuComponent {
     const id = uid;
     console.log(this.login);
     this.firestore.getDoc<Usuario>(path, id).subscribe(res => {
-      if (res) {
+      if (res && this.login) {
         this.rol = res.cargo;
         console.log(res.cargo);
       }

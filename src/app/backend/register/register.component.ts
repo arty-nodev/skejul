@@ -23,7 +23,8 @@ export class RegisterComponent implements OnInit {
     uid: null,
     cargo: null,
     horarios: [],
-    id_local: null
+    id_local: null,
+    trabaja: null
   }
 
   correo: string = '';
@@ -66,6 +67,7 @@ export class RegisterComponent implements OnInit {
 
       this.data.uid = uid;
       this.data.password = null;
+      this.data.trabaja = true;
       await this.database.createDoc(this.data, path, uid).then(() => {
         this.login();
       });
@@ -78,8 +80,6 @@ export class RegisterComponent implements OnInit {
       this.data.correo = null;
       this.data.id_usuario = null;
       this.data.password = null;
-
-
     }
 
   }
