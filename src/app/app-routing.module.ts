@@ -6,7 +6,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './backend/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { UserHomeComponent } from './pages/user-home/user-home.component';
-import { CalendarComponent } from './components/calendar/calendar.component';
 
 const routes: Routes = [
   {

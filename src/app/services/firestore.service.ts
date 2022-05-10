@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { firestore } from 'firebase/app'
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,12 @@ disableUser<type>(path:string, uid:string, value:boolean){
     .then(() => {
       return this.firestore.collection(path).doc<type>(uid).valueChanges();
     })
+}
+
+createNewEvent(path:string, uid:string, data:any){
+  this.firestore
+    .collection(path)
+    .doc(uid);
 }
   
 }
