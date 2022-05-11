@@ -81,7 +81,7 @@ export class EditComponent implements OnInit {
   }
 
   volver(){
-    this.router.navigate(['home']);
+    this.router.navigate(['ahome']);
     this.ngOnInit();
   }
 

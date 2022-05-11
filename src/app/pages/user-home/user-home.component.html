@@ -6,7 +6,7 @@
 
 </ion-header>
 <ion-content>
-    <ion-button fill="clear" expand="block" (click)="addEvent()">
+    <ion-button fill="clear" expand="block" (click)="openCalModal()">
         Nuevo horario 
     </ion-button>
     <ion-row>
@@ -30,7 +30,13 @@
     [eventSource]="eventSource"
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"
-    (onTitleChanged)="onViewTittleChanged($event)">
+    [startingDayMonth]="1"
+    (onCurrentDateChanged)="onCurrentDateChanged($event)"
+    (onEventSelected)="onEventSelected($event)"
+    (onTitleChanged)="onViewTitleChanged($event)"
+    (onTimeSelected)="onTimeSelected($event)"
+    step="30"
+    >
     
     </calendar>
    
