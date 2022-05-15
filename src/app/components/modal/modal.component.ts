@@ -1,5 +1,6 @@
 import { ModalController } from '@ionic/angular';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { format, parse, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-modal',
@@ -16,8 +17,10 @@ export class ModalComponent implements AfterViewInit {
 
   };
 
+  timepicker = null;
+
   event = {
-    title: '',
+    title: 'Trabajar',
     startTime: null,
     endTime: null,
     allDay: false
@@ -36,7 +39,13 @@ export class ModalComponent implements AfterViewInit {
   }
 
   save(){
+   
+   
+    console.log(this.event);
+    
     this.modalCtrl.dismiss({event: this.event})
+  
+    
   }
 
   onViewTitleChanged(title){
@@ -49,6 +58,17 @@ export class ModalComponent implements AfterViewInit {
 
   close(){
     this.modalCtrl.dismiss();
+  }
+
+  dateChanged(date){
+    console.log(date);
+    let newDate = format(parseISO(date), 'HH:mm');
+    
+    this.event.startTime = newDate;
+  /*   
+    this.event.endTime = newDate + 60;
+    console.log(newDate); */
+    
   }
 
 }

@@ -14,12 +14,11 @@ import { LoginComponent } from 'src/app/pages/login/login.component';
 })
 export class MenuComponent {
 
-  login: boolean = false;
   cargo: String[] = ['Auxiliar', 'Encargado', 'Gerente'];
   rol: string = null;
 
 
-  constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
+  constructor(public auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
     this.getEstado();
   }
 
@@ -33,14 +32,14 @@ export class MenuComponent {
   getEstado() {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
-        this.login = true;
+        this.auth.loginUser = true;
         console.log(res.uid);
         this.getCargo(res.uid);
       }
       else {
         console.log('not logged');
         this.router.navigate(['login'])
-        this.login = false;
+        this.auth.loginUser = false;
 
       }
     })
@@ -49,14 +48,16 @@ export class MenuComponent {
     this.rol = null;
     this.auth.logout();
     this.interaction.presentToast("Sesión cerrada");
+    this.auth.loginUser = false;
+    this.router.navigate(['login']);
   }
 
   getCargo(uid: string) {
     const path = 'usuarios';
     const id = uid;
-    console.log(this.login);
+    console.log(this.auth.loginUser);
     this.firestore.getDoc<Usuario>(path, id).subscribe(res => {
-      if (res && this.login) {
+      if (res && this.auth.loginUser) {
         this.rol = res.cargo;
         console.log(res.cargo);
       }

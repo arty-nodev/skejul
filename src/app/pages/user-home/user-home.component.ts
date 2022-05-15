@@ -31,7 +31,7 @@ export class UserHomeComponent implements OnInit {
   private uid: string = '';
 
   constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController) {
-    this.eventSource = [];
+    
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -48,17 +48,18 @@ export class UserHomeComponent implements OnInit {
 
   loadEvents(uid) {
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
+      this.eventSource = [];
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
         event.id = snap.payload.doc.id;
         event.startTime = event.startTime.toDate();
         event.endTime = event.endTime.toDate();
-        console.log(this.eventSource);
-
+  
         this.eventSource.push(event)
         this.myCalendar.loadEvents();
       })
     })
+    console.log(this.eventSource);
   }
 
   next() {
@@ -73,9 +74,9 @@ export class UserHomeComponent implements OnInit {
   }
 
   onTimeSelected(ev) {
-    console.log('Selected time:' + ev.selectedTime + ', hasEvents: ' +
+  /*   console.log('Selected time:' + ev.selectedTime + ', hasEvents: ' +
       (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
-    this.selectedDate = ev.selectedTime;
+    this.selectedDate = ev.selectedTime; */
 
   }
 
@@ -85,7 +86,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   onCurrentDateChanged(event: Date) {
-    console.log('Current date change: ' + event);
+    //console.log('Current date change: ' + event);
 
   }
 
@@ -95,28 +96,20 @@ export class UserHomeComponent implements OnInit {
       cssClass: 'cal-modal',
       backdropDismiss: false
     })
-
-    await modal.present();
+    modal.present();
 
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
+        console.log(result.data.event);
+        
         let event = result.data.event;
-        let start = event.startTime;
-        event.startTime = new Date(
-          Date.UTC(
-            start.getUTCFullYear(),
-            start.getUTCMonth(),
-            start.getUTCDate()
-          )
-        );
+        let start = event.startTime.toDate();
+        let end = event.endTime;
 
-        event.endTime = new Date(
-          Date.UTC(
-            start.getUTCFullYear(),
-            start.getUTCMonth(),
-            start.getUTCDate()
-          )
-        );
+        console.log(start);
+        
+        console.log(result.data.event);
+        
         this.eventSource.push(result.data.event);
         this.myCalendar.loadEvents();
       }

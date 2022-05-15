@@ -13,17 +13,13 @@
 </ion-toolbar>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="stacked">Title</ion-label>
-    <ion-input type="text" [(ngModel)]="event.title"></ion-input>
-  </ion-item>
-<!--   <ion-item>
-    <ion-label position="stacked">Description</ion-label>
-    <ion-input type="text" [(ngModel)]="event.desc"></ion-input>
-  </ion-item> -->
-
+  <div>
+    <ion-datetime #timepicker 
+    presentation="time" 
+    minute-values="00,05,10,15,20,25,30,35,40,45,50,55" 
+    (ionChange)="dateChanged(timepicker.value)"></ion-datetime>
+  </div>
   <calendar
-  *ngIf="modalReady"
   [eventSource]="eventSource"
   [calendarMode]="calendar.mode"
   [currentDate]="calendar.currentDate"

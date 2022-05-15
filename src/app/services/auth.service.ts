@@ -9,6 +9,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class AuthService {
 
+  loginUser:boolean = false;
+
   constructor(private auth: AngularFireAuth) { }
 
   login(correo: string, password: string){
@@ -29,5 +31,9 @@ export class AuthService {
 
   updateEmail(uid:string){
     //Update email or password first time login
+  }
+
+  checkLogin(){
+    return this.loginUser;
   }
 }
