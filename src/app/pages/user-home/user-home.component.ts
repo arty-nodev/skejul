@@ -16,6 +16,7 @@ export class UserHomeComponent implements OnInit {
 
   eventSource = [];
   viewTitle: string;
+  newEvent: Date;
 
   calendar = {
     mode: 'month',
@@ -25,26 +26,29 @@ export class UserHomeComponent implements OnInit {
 
   selectedDate = new Date();
 
-  @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
   database: any;
   data: any;
   private uid: string = '';
 
+  @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
   constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController) {
-    
+
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
           if (res) {
             this.uid = res.uid;
-            this.loadEvents(this.uid)
+            this.loadEvents(this.uid);
           }
         })
       }
     })
+
+
+
   }
 
-  ngOnInit() { }
+  ngOnInit() { console.log(this.calendar); }
 
   loadEvents(uid) {
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
@@ -54,7 +58,7 @@ export class UserHomeComponent implements OnInit {
         event.id = snap.payload.doc.id;
         event.startTime = event.startTime.toDate();
         event.endTime = event.endTime.toDate();
-  
+
         this.eventSource.push(event)
         this.myCalendar.loadEvents();
       })
@@ -74,9 +78,9 @@ export class UserHomeComponent implements OnInit {
   }
 
   onTimeSelected(ev) {
-  /*   console.log('Selected time:' + ev.selectedTime + ', hasEvents: ' +
-      (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
-    this.selectedDate = ev.selectedTime; */
+    /*   console.log('Selected time:' + ev.selectedTime + ', hasEvents: ' +
+        (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
+      this.selectedDate = ev.selectedTime; */
 
   }
 
@@ -91,35 +95,56 @@ export class UserHomeComponent implements OnInit {
   }
 
   async openCalModal() {
+
+
     const modal = await this.modalCtrl.create({
       component: ModalComponent,
       cssClass: 'cal-modal',
       backdropDismiss: false
     })
+
     modal.present();
 
     modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.event) {
-        console.log(result.data.event);
-        
-        let event = result.data.event;
-        let start = event.startTime.toDate();
-        let end = event.endTime;
 
-        console.log(start);
+      if (result.data && result.data.event) {
+
+
+        let newEvent = result.data.event;
+        let start = newEvent.startTime;
+        let end = newEvent.endTime;
+        let day = newEvent.daySelected;
+
+
+    
         
-        console.log(result.data.event);
-        
-        this.eventSource.push(result.data.event);
+        console.log(newEvent);
+     //   this.setTimeEvent(start, end, day, newEvent);
+
+
+
+
+        this.eventSource.push(newEvent);
+        console.log(this.eventSource);
+
         this.myCalendar.loadEvents();
       }
     });
+  }
+
+  setTimeEvent(start, end, day, newEvent) {
+
+    let newStart = new Date(day).setHours(start);
+    let newEnd = new Date(day).setHours(end);
+    newEvent.startTime = newStart;
+    newEvent.endTime = newEnd;
   }
 
   async addEvent() {
     let start = new Date();
     let end = new Date();
     end.setMinutes(end.getMinutes() + 60);
+
     const event = {
       title: 'Trabajar ' + start.getMinutes(),
       startTime: start,

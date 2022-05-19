@@ -19,14 +19,18 @@
     minute-values="00,05,10,15,20,25,30,35,40,45,50,55" 
     (ionChange)="dateChanged(timepicker.value)"></ion-datetime>
   </div>
+
   <calendar
+  *ngIf="modalReady"
   [eventSource]="eventSource"
   [calendarMode]="calendar.mode"
   [currentDate]="calendar.currentDate"
   [startingDayMonth]="1"
   (onTitleChanged)="onViewTitleChanged($event)"
+  (onEventSelected)="onEventSelected($event)"
+  (onCurrentDateChanged)="onCurrentDateChanged($event)"
   (onTimeSelected)="onTimeSelected($event)"
-  lockSwipes="true"
+  step="30"
   >
   
   </calendar>

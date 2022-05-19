@@ -1,6 +1,7 @@
 import { ModalController } from '@ionic/angular';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { format, parse, parseISO } from 'date-fns';
+import { CalendarComponent } from 'ionic2-calendar';
 
 @Component({
   selector: 'app-modal',
@@ -8,8 +9,14 @@ import { format, parse, parseISO } from 'date-fns';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements AfterViewInit {
-  
+
+
   viewTitle: string;
+  firstTime: number;
+  monthTitle: string;
+  modalReady = false;
+  dateSelected = new Date();
+  dateContainer = new Date();
 
   calendar = {
     mode: 'month',
@@ -17,58 +24,109 @@ export class ModalComponent implements AfterViewInit {
 
   };
 
-  timepicker = null;
 
   event = {
     title: 'Trabajar',
-    startTime: null,
-    endTime: null,
+    startTime: new Date(),
+    endTime: new Date(),
     allDay: false
   };
 
-  modalReady = false;
 
 
-  constructor(private modalCtrl: ModalController) { }
+  @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
+  constructor(private modalCtrl: ModalController) {
+    this.viewTitle = 'Hora de entrada';
+    this.firstTime = 0;
+  }
 
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     setTimeout(() => {
       this.modalReady = true;
+
+
     }, 0);
   }
 
-  save(){
-   
-   
-    console.log(this.event);
+  save() {
+
+    if (this.firstTime == 0) {
+      this.firstTime++;
+      this.viewTitle = 'Hora de salida';
+     
+    } else if (this.firstTime == 1) {
+     
+      this.modalCtrl.dismiss({ event: this.event })
+      this.firstTime = 0;
+      this.viewTitle = 'Hora de entrada';
+    }
+
+    console.table(this.event);
+  }
+
+  onTimeSelected(ev) {
+
+    this.dateSelected = ev.selectedTime;
+    this.event.startTime = ev.selectedTime;
     
-    this.modalCtrl.dismiss({event: this.event})
-  
-    
+    console.table(this.event)
+
   }
 
-  onViewTitleChanged(title){
-    this.viewTitle = title;
-  }
-
-  onTimeSelected(ev){
-    this.event.startTime = new Date(ev.selectedTime);
-  }
-
-  close(){
+  close() {
     this.modalCtrl.dismiss();
   }
 
-  dateChanged(date){
-    console.log(date);
-    let newDate = format(parseISO(date), 'HH:mm');
+  dateChanged(date) {
     
-    this.event.startTime = newDate;
-  /*   
-    this.event.endTime = newDate + 60;
-    console.log(newDate); */
+    const newDate = new Date(date)
     
+     
+    newDate.setDate(this.event.startTime.getDate())
+    newDate.setMonth(this.event.startTime.getMonth())
+    newDate.setFullYear(this.event.startTime.getFullYear())
+
+
+    console.log('newDate date',newDate);
+
+    
+    if (this.firstTime == 0) {
+      this.event.startTime.setTime(newDate.getTime())
+      this.dateContainer = this.event.startTime;
+      console.log(this.dateContainer);
+      
+    } else {
+      console.log('until endTime',this.dateContainer);
+      
+     this.event.endTime.setTime(newDate.getTime())
+      this.event.startTime = this.dateContainer;
+    }
+
+  }
+
+  next() {
+    this.myCalendar.slideNext();
+  }
+  back() {
+    this.myCalendar.slidePrev();
+  }
+
+
+  onViewTitleChanged(tittle) {
+    this.monthTitle = tittle;
+  }
+
+  onEventSelected(event) {
+    console.log('Event selected: ' + event.startTime + ' - ' + event.endTime + ', ' + event.title);
+
+  }
+
+  onCurrentDateChanged(event: Date) {
+
+    console.log('Current date change: ' + event);
+
+
   }
 
 }
