@@ -17,7 +17,7 @@ export class ModalComponent implements AfterViewInit {
   modalReady = false;
   dateSelected = new Date();
   dateContainer = new Date();
-
+  turno:string = '';
   calendar = {
     mode: 'month',
     currentDate: new Date(),
@@ -28,8 +28,11 @@ export class ModalComponent implements AfterViewInit {
   event = {
     startTime: new Date(),
     endTime: new Date(),
-    allDay: false
+    allDay: false,
+    turno: this.turno
   };
+
+  turnos = ['Apertura', 'Medio turno', 'Turno par(1)','Turno par(2)', 'Turno de tarde', 'Turno de apoyo', 'Cierre de basuras', 'Cierre de panes', 'Cierre de terraza', 'Cierre de frente', 'Cierre de salón', 'Cierre de baños', 'Cierre de cocina', 'Friegue']
 
 
 
@@ -53,9 +56,10 @@ export class ModalComponent implements AfterViewInit {
     if (this.firstTime == 0) {
       this.firstTime++;
       this.viewTitle = 'Hora de salida';
+      this.event.turno = this.turno;
      
     } else if (this.firstTime == 1) {
-     
+      this.event.turno = this.turno;
       this.modalCtrl.dismiss({ event: this.event })
       this.firstTime = 0;
       this.viewTitle = 'Hora de entrada';

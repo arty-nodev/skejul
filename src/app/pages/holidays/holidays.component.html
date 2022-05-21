@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Próximas vaciones</ion-card-subtitle>
+      <ion-card-title>
+        <ion-chip>
+          <ion-label color="secondary">{{holidays.startTime}}</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label color="secondary">{{holidays.endTime}}</ion-label>
+        </ion-chip>
+        </ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+     Días restantes para tus próximas vacaciones  {{difference}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

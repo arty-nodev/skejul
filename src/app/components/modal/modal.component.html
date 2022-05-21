@@ -34,6 +34,11 @@
   >
   
   </calendar>
-
+  <ion-item>
+    <ion-label>Turno</ion-label>
+    <ion-select [(ngModel)]="turno">
+      <ion-select-option *ngFor="let turno of turnos" [value]="turno">{{turno}}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
 </ion-content>

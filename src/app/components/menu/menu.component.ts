@@ -16,6 +16,7 @@ export class MenuComponent {
 
   cargo: String[] = ['Auxiliar', 'Encargado', 'Gerente'];
   rol: string = null;
+  uid:string = '';
 
 
   constructor(public auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
@@ -59,9 +60,19 @@ export class MenuComponent {
     this.firestore.getDoc<Usuario>(path, id).subscribe(res => {
       if (res && this.auth.loginUser) {
         this.rol = res.cargo;
+        this.uid = res.uid;
         console.log(res.cargo);
       }
     })
+  }
+
+  goHome(){
+    this.router.navigate(['uhome/'+this.uid])
+  }
+
+  goHolidays(){
+    this.router.navigate(['holidays/'+this.uid])
+
   }
 }
 

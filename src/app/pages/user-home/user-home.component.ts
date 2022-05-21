@@ -61,13 +61,10 @@ export class UserHomeComponent implements OnInit {
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
-    console.log(this.uidUser);
-    console.log(this.calendar);
   }
 
   loadEvents(uid) {
-    console.log(uid);
-    
+ 
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
@@ -75,12 +72,13 @@ export class UserHomeComponent implements OnInit {
         event.id = snap.payload.doc.id;
         event.startTime = event.startTime.toDate();
         event.endTime = event.endTime.toDate();
+        event.title = event.turno;
 
         this.eventSource.push(event)
         this.myCalendar.loadEvents();
       })
     })
-    console.log(this.eventSource);
+   
   }
 
   next() {
@@ -130,34 +128,28 @@ export class UserHomeComponent implements OnInit {
         let newEvent = result.data.event;
         let start = newEvent.startTime;
         let end = newEvent.endTime;
+        let turno = newEvent.turno;
+        console.log(turno);
+        
 
         console.log(newEvent);
 
-        this.addEvent(start, end);
+        this.addEvent(start, end, turno);
         this.eventSource.push(newEvent);
         this.myCalendar.loadEvents();
       }
     });
   }
 
-  setTimeEvent(start, end, day, newEvent) {
-
-    let newStart = new Date(day).setHours(start);
-    let newEnd = new Date(day).setHours(end);
-    newEvent.startTime = newStart;
-    newEvent.endTime = newEnd;
-  }
-
-  async addEvent(startTime, endTime) {
+  async addEvent(startTime, endTime, turno) {
 
     //looking for a tittle --> Same tittle gives error 
     const event = {
+      turno: turno,
       startTime: startTime,
       endTime: endTime,
       allDay: false
     };
-
-console.log(this.uid);
 
     this.db.createNewEvent('usuarios', this.uidUser, event);
 
