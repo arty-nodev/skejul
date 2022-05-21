@@ -48,4 +48,10 @@ export class AdminHomeComponent implements OnInit {
     this.interaction.presentAlertConfirm(this.usuarios[index]);
   }
 
+  userCalendar(index){
+    console.log(this.usuarios[index]);
+    this.router.navigate(['uhome/'+this.usuarios[index].uid])
+    
+  }
+
 }

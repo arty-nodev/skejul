@@ -12,7 +12,7 @@ const routes: Routes = [
     path: 'ahome', component: AdminHomeComponent
   },
   {
-    path: 'uhome', component: UserHomeComponent
+    path: 'uhome/:uid', component: UserHomeComponent
   },
   {
     path: 'register', component: RegisterComponent

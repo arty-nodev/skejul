@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
           if (this.auth.loginUser) {
             console.log('dentro');
             if (res.cargo == 'Auxiliar') {
-              this.router.navigate(['uhome'])
+              this.router.navigate(['uhome/'+res.uid])
               console.log('go user');
             } else if (res.cargo == 'Gerente') {
               this.router.navigate(['ahome']);

@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from './../../components/modal/modal.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -17,6 +18,14 @@ export class UserHomeComponent implements OnInit {
   eventSource = [];
   viewTitle: string;
   newEvent: Date;
+  rol: string;
+  uidUser: string;
+  selectedDate = new Date();
+
+  database: any;
+  data: any;
+  private uid: string;
+
 
   calendar = {
     mode: 'month',
@@ -24,21 +33,23 @@ export class UserHomeComponent implements OnInit {
 
   };
 
-  selectedDate = new Date();
-
-  database: any;
-  data: any;
-  private uid: string = '';
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController) {
-
+  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute) {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
-          if (res) {
+          console.log('res -->', res);
+          
+          if (res && res.cargo != 'Gerente') {
+            this.rol = res.cargo;
             this.uid = res.uid;
             this.loadEvents(this.uid);
+          } else {
+            this.rol = res.cargo;
+            console.log(this.uidUser);
+            
+            this.loadEvents(this.uidUser);
           }
         })
       }
@@ -48,9 +59,15 @@ export class UserHomeComponent implements OnInit {
 
   }
 
-  ngOnInit() { console.log(this.calendar); }
+  ngOnInit() {
+    this.uidUser = this.route.snapshot.paramMap.get('uid');
+    console.log(this.uidUser);
+    console.log(this.calendar);
+  }
 
   loadEvents(uid) {
+    console.log(uid);
+    
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
@@ -113,20 +130,11 @@ export class UserHomeComponent implements OnInit {
         let newEvent = result.data.event;
         let start = newEvent.startTime;
         let end = newEvent.endTime;
-        let day = newEvent.daySelected;
 
-
-    
-        
         console.log(newEvent);
-     //   this.setTimeEvent(start, end, day, newEvent);
 
-
-
-
+        this.addEvent(start, end);
         this.eventSource.push(newEvent);
-        console.log(this.eventSource);
-
         this.myCalendar.loadEvents();
       }
     });
@@ -140,20 +148,18 @@ export class UserHomeComponent implements OnInit {
     newEvent.endTime = newEnd;
   }
 
-  async addEvent() {
-    let start = new Date();
-    let end = new Date();
-    end.setMinutes(end.getMinutes() + 60);
+  async addEvent(startTime, endTime) {
 
+    //looking for a tittle --> Same tittle gives error 
     const event = {
-      title: 'Trabajar ' + start.getMinutes(),
-      startTime: start,
-      endTime: end,
+      startTime: startTime,
+      endTime: endTime,
       allDay: false
     };
 
+console.log(this.uid);
 
-    this.db.createNewEvent('usuarios', this.uid, event);
+    this.db.createNewEvent('usuarios', this.uidUser, event);
 
 
 

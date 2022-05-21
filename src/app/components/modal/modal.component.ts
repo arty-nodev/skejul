@@ -26,7 +26,6 @@ export class ModalComponent implements AfterViewInit {
 
 
   event = {
-    title: 'Trabajar',
     startTime: new Date(),
     endTime: new Date(),
     allDay: false
