@@ -105,4 +105,38 @@ export class InteractionService {
     await this.alert.present();
 
   }
+
+  async presentHolidaysConfirm(data) {
+    this.alert = await this.alertController.create({
+      header: 'Solicitar vacaciones',
+      message: `Tus vacaciones serán del ${data.startTime.getDate()} al ${data.endTime.getDate()} de ${data.endTime.toLocaleString('es-ES', {month: 'long'})}.<br/><strong>¿Desea continuar?</strong>`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'Cancel',
+          id: 'cancel-button',
+          handler: () => {
+            console.log('Cancelado'); 
+          }
+        }, {
+          text: 'Si, continuar',
+          id: 'confirm-button',
+          handler: () => {
+            console.log(data);
+            this.database.disableUser<Usuario>('usuarios', data.uid, false).then(res => {
+              if (res) {
+                console.log(res);
+                this.presentToast('Usuario deshabilitado con éxito');
+              } else {
+                this.presentToast('Algo salió mal');
+              }
+            })
+          }
+        }
+      ]
+    });
+
+    await this.alert.present();
+
+  }
 }

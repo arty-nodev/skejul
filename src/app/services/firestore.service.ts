@@ -81,5 +81,8 @@ export class FirestoreService {
   getEvents(path: string, uid:string){
    return this.firestore.collection(path + '/' + uid + '/horarios').snapshotChanges();
   }
+  getHolidays(path: string, uid:string){
+    return this.firestore.collection(path + '/' + uid + '/vacaciones').snapshotChanges();
+   }
 
 }

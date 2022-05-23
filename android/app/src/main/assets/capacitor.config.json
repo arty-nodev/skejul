@@ -1,6 +1,16 @@
 {
-	"appId": "io.ionic.skejul",
+	"appId": "com.artynodev.skejul",
 	"appName": "skejul",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"plugins": {
+		"PushNotifications": {
+			"presentationOptions": [
+				"badge",
+				"sound",
+				"alert"
+			]
+		}
+	}
 }

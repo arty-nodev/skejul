@@ -28,7 +28,6 @@ export class ModalComponent implements AfterViewInit {
   event = {
     startTime: new Date(),
     endTime: new Date(),
-    allDay: false,
     turno: this.turno
   };
 
@@ -41,7 +40,6 @@ export class ModalComponent implements AfterViewInit {
     this.viewTitle = 'Hora de entrada';
     this.firstTime = 0;
   }
-
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -89,7 +87,6 @@ export class ModalComponent implements AfterViewInit {
     newDate.setDate(this.event.startTime.getDate())
     newDate.setMonth(this.event.startTime.getMonth())
     newDate.setFullYear(this.event.startTime.getFullYear())
-
 
     console.log('newDate date',newDate);
 

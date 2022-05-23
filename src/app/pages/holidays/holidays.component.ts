@@ -1,8 +1,12 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { ModalController } from '@ionic/angular';
+import { HolidayModalComponent } from 'src/app/components/holiday-modal/holiday-modal.component';
+
+
 
 @Component({
   selector: 'app-holidays',
@@ -22,7 +26,7 @@ export class HolidaysComponent implements OnInit {
 
   difference: number;
 
-  constructor(private db: FirestoreService, private route: ActivatedRoute, private auth: AuthService) {
+  constructor(private db: FirestoreService, private route: ActivatedRoute, private auth: AuthService, private router: Router, private modalCtrl: ModalController) {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -30,46 +34,88 @@ export class HolidaysComponent implements OnInit {
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
+            this.getHolidays(this.uid)
           } else {
             this.rol = res.cargo;
             console.log(this.uidUser);
+            this.getHolidays(this.uidUser)
           }
         })
+      }  else{
+          this.router.navigate(['login'])
+          this.auth.loginUser = false;
+        
       }
     })
    }
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
-    this.difference = this.getDifferenceOfDays(this.holidays.startTime, this.holidays.endTime);
+
   }
 
   getHolidays(uid){
-    this.db.getEvents('usuarios', uid).subscribe(colSnap => {
+    this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
         event.id = snap.payload.doc.id;
         event.startTime = event.startTime.toDate();
         event.endTime = event.endTime.toDate();
+ 
+        if (event.startTime.getTime() > new Date().getTime()) {
+          this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
+          this.holidays.startTime = event.startTime.getDate() +' - '+ event.startTime.toLocaleString('es-ES', {month: 'long'}).toUpperCase();
+          this.holidays.endTime = event.endTime.getDate() +' - '+ event.endTime.toLocaleString('es-ES', {month: 'long'}).toUpperCase();
+        } else {
+            this.difference = 0;
+        }
       })
     })
+
   }
 
   getDifferenceOfDays(start, end) {
+
     const date1 = new Date(start);
     const date2 = new Date(end);
 
-    // One day in milliseconds
-    const oneDay = 1000 * 60 * 60 * 24;
+    const diffTime = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
-    // Calculating the time difference between two dates
-    const diffInTime = date2.getTime() - date1.getTime();
+   console.log(diffDays);
+    
 
-    // Calculating the no. of days between two dates
-    const diffInDays = Math.round(diffInTime / oneDay);
-
-    return diffInDays;
+    return diffDays;
 }
+
+async solicitar(){
+ 
+    const modal = await this.modalCtrl.create({
+      component: HolidayModalComponent,
+      cssClass: 'cal-modal',
+      backdropDismiss: false
+    })
+
+    modal.present();
+
+    modal.onDidDismiss().then((result) => {
+
+      if (result.data && result.data.event) {
+
+
+        let newEvent = result.data.event;
+        let start = newEvent.startTime;
+        let end = newEvent.endTime;
+        let turno = newEvent.turno;
+        console.log(turno);
+        
+
+        console.log(newEvent);
+
+      }
+    });
+  }
+
 
 }

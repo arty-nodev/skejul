@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1043212514501",
+    "project_id": "skejul-aa9fb",
+    "storage_bucket": "skejul-aa9fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043212514501:android:3d870428305babc1c3ecac",
+        "android_client_info": {
+          "package_name": "com.artynodev.skejul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043212514501-btprmq2pp6liuq903sc0muhjpgekise6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMBPU_LazB8nhCsASIZj14-Sd3rg_NL88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043212514501-btprmq2pp6liuq903sc0muhjpgekise6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

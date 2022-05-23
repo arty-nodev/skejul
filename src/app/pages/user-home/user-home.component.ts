@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from './../../components/modal/modal.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -35,7 +35,7 @@ export class UserHomeComponent implements OnInit {
 
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute) {
+  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router) {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -52,6 +52,9 @@ export class UserHomeComponent implements OnInit {
             this.loadEvents(this.uidUser);
           }
         })
+      } else {
+        this.router.navigate(['login'])
+        this.auth.loginUser = false;
       }
     })
 
