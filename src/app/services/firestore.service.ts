@@ -85,4 +85,10 @@ export class FirestoreService {
     return this.firestore.collection(path + '/' + uid + '/vacaciones').snapshotChanges();
    }
 
+   askForHolidays(path:string, uid:string, data:any){
+     const collection = this.firestore.collection(path + '/' + uid + '/vacaciones');
+     collection.doc(data.title).set(data);
+     return true;
+   }
+
 }

@@ -34,7 +34,7 @@ import { HolidayModalComponent } from './components/holiday-modal/holiday-modal.
   declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent],
   entryComponents: [],
   imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule, IonicStorageModule.forRoot(), NgCalendarModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent, {provide: LOCALE_ID, useValue: 'es-ES'}],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent, {provide: LOCALE_ID, useValue: 'es-ES'}, HolidaysComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

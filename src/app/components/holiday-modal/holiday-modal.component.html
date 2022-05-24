@@ -27,24 +27,16 @@
     </ion-col>
   </ion-row>
 
-  <ng-template #calendarView let-view="view" let-row="row" let-col="col">
-    <div [class.with-event]="view.dates[row*7+col].events.length">
-      {{view.dates[row*7+col].label}}
-    </div>
-    <div class="indicator-container">
-      <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events"></div>
-    </div>
-  </ng-template>
 
   <calendar 
   [eventSource]="eventSource" 
   [calendarMode]="calendar.mode" 
   [currentDate]="calendar.currentDate"
   [startingDayMonth]="1" 
+  [markDisabled]="markDisabled"
   (onTitleChanged)="onViewTitleChanged($event)"
   (onTimeSelected)="onTimeSelected($event)"
-  step="30"
-  [monthviewDisplayEventTemplate]="calendarView">
+  step="30" >
 
   </calendar>
 

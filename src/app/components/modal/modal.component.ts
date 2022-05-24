@@ -17,11 +17,12 @@ export class ModalComponent implements AfterViewInit {
   modalReady = false;
   dateSelected = new Date();
   dateContainer = new Date();
+  selected: boolean;
   turno:string = '';
+
   calendar = {
     mode: 'month',
     currentDate: new Date(),
-
   };
 
 
@@ -39,12 +40,13 @@ export class ModalComponent implements AfterViewInit {
   constructor(private modalCtrl: ModalController) {
     this.viewTitle = 'Hora de entrada';
     this.firstTime = 0;
+    this.selected = false;
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.modalReady = true;
-
+      this.selected = true;
 
     }, 0);
   }
@@ -70,7 +72,6 @@ export class ModalComponent implements AfterViewInit {
 
     this.dateSelected = ev.selectedTime;
     this.event.startTime = ev.selectedTime;
-    
     console.table(this.event)
 
   }

@@ -27,7 +27,7 @@
       <ion-card-subtitle>No hay próximas vacaciones a la vista</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content class="ion-text-center" >
-     <ion-button (click)="solicitar()" expand="block" fill="clear" shape="round" >
+     <ion-button *ngIf="available" (click)="solicitar()" expand="block" fill="clear" shape="round">
       Solicitar vacaciones
      </ion-button>
     </ion-card-content>

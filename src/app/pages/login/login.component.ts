@@ -14,7 +14,7 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
 export class LoginComponent implements OnInit {
 
   constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private storage: StorageService, private firestore: FirestoreService) {
-
+    this.auth.logout();
   }
 
   ngOnInit() { }
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(correo, password).then(res => {
 
       if (res) {
+        //encrypt -''-
         this.storage.set('info', data);
         this.interaction.closeLoading();
         this.interaction.presentToast("Sesión iniciada con éxito");
