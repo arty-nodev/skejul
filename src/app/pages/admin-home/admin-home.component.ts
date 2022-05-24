@@ -56,8 +56,5 @@ export class AdminHomeComponent implements OnInit {
 
   }
 
-  checkHolidays(){
-    this.router.navigate(['checkHoli']);
-  }
 
 }

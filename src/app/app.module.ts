@@ -1,4 +1,4 @@
-import { HolidaysComponent } from './pages/holidays/holidays.component';
+import { CheckHolidaysComponent } from './pages/check-holidays/check-holidays.component';
 import { UserHomeComponent } from './pages/user-home/user-home.component';
 import { ExworkersComponent } from './pages/exworkers/exworkers.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -28,10 +28,11 @@ import { EditComponent } from './backend/edit/edit.component';
 import { AppComponent } from './app.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { HolidayModalComponent } from './components/holiday-modal/holiday-modal.component';
+import { HolidaysComponent } from './pages/holidays/holidays.component';
 
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent],
+  declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent, CheckHolidaysComponent],
   entryComponents: [],
   imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule, IonicStorageModule.forRoot(), NgCalendarModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent, {provide: LOCALE_ID, useValue: 'es-ES'}, HolidaysComponent],

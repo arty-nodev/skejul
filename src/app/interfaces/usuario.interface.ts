@@ -7,7 +7,6 @@ export interface Usuario {
     id_usuario: number;
     uid: string;
     cargo: string;
-    horarios: [];
     id_local: number;
     trabaja: boolean;
 }

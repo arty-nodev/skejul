@@ -1,3 +1,4 @@
+import { CheckHolidaysComponent } from './pages/check-holidays/check-holidays.component';
 import { HolidaysComponent } from './pages/holidays/holidays.component';
 import { ExworkersComponent } from './pages/exworkers/exworkers.component';
 import { EditComponent } from './backend/edit/edit.component';
@@ -28,6 +29,8 @@ const routes: Routes = [
   },
   {
     path: 'holidays/:uid', component: HolidaysComponent
+  },{
+    path: 'checkHolidays', component: CheckHolidaysComponent
   },{
     path: '',
     redirectTo: 'login',

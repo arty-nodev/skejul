@@ -1,3 +1,20 @@
-<p>
-  check-holidays works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Check Holidays</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let usuario of usuarios; index as i" class="card-name">
+    <ion-card-header>
+      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-chip>
+        <ion-label color="secondary">{{allHolidays[i]?.startTime.getDate()}} - {{allHolidays[i]?.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
+      </ion-chip>
+      <ion-chip>
+        <ion-label color="secondary">{{allHolidays[i]?.endTime.getDate()}} - {{allHolidays[i]?.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
+      </ion-chip>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

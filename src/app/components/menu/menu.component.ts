@@ -74,6 +74,11 @@ export class MenuComponent {
     this.router.navigate(['holidays/'+this.uid])
 
   }
+
+  
+  checkHolidays(){
+    this.router.navigate(['checkHolidays']);
+  }
 }
 
 
