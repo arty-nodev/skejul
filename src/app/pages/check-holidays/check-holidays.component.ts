@@ -13,65 +13,85 @@ export class CheckHolidaysComponent implements AfterViewInit {
   usuarios: Usuario[];
   difference: number;
   allHolidays: any[];
- 
+  index: number;
+
   constructor(private database: FirestoreService, private interaction: InteractionService) {
     this.allHolidays = [];
-   }
+    this.index = 0;
+  }
   ngAfterViewInit() {
     this.getUsuarios();
   }
-
-  
 
   getUsuarios() {
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
       this.usuarios = res;
       this.getHolidays(res)
     });
-
-          
-   
-    
-   
   }
 
   getHolidays(data) {
-
+    this.allHolidays = [];
+    
     data.forEach(element => {
+
+      
       
       this.database.getHolidays('usuarios', element.uid).subscribe(colSnap => {
+        this.index = data.indexOf(element);
+    
+        console.log(this.index);
+        console.log(element);
         colSnap.forEach(snap => {
-          console.log(element.uid);
+
           let event: any = snap.payload.doc.data();
-      
+          
+
           if (!event.petition) {
+     
+            
             event.id = snap.payload.doc.id;
             event.startTime = event.startTime.toDate();
             event.endTime = event.endTime.toDate();
-            
+
             if (event.startTime.getTime() > new Date().getTime()) {
               this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
               this.allHolidays.push(event);
+        
+
             }
 
-            
-            
-    
-          
+          } else if (event.petition) {
+          this.usuarios.splice(this.index, 1)
+           
+           
           }
-         
-          
-        
+
         })
-       
+
       })
-  
-      
-    });   
-    
+
+
+    });
+
   }
 
-  
+  deny(data) {
+
+  }
+  accept(data) {
+    console.log(this.usuarios[data]);
+    this.interaction.presentAcceptHolidays('usuarios', this.usuarios[data].uid, this.usuarios[data]);
+   
+
+
+        
+    
+
+
+
+  }
+
   getDifferenceOfDays(start, end) {
 
     const date1 = new Date(start);

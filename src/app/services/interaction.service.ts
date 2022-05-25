@@ -23,7 +23,7 @@ export class InteractionService {
   }
 
   //Generamoms el loading con mensaje
-  async presentLoading(mensaje: string){
+  async presentLoading(mensaje: string) {
     this.loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: mensaje,
@@ -34,7 +34,7 @@ export class InteractionService {
   }
 
   //Cerramos el loading
-  async closeLoading(){
+  async closeLoading() {
     await this.loading.dismiss();
   }
 
@@ -48,7 +48,7 @@ export class InteractionService {
           role: 'Cancel',
           id: 'cancel-button',
           handler: () => {
-            console.log('Cancelado'); 
+            console.log('Cancelado');
           }
         }, {
           text: 'Si, continuar',
@@ -82,7 +82,7 @@ export class InteractionService {
           role: 'Cancel',
           id: 'cancel-button',
           handler: () => {
-            console.log('Cancelado'); 
+            console.log('Cancelado');
           }
         }, {
           text: 'Si, continuar',
@@ -109,14 +109,14 @@ export class InteractionService {
   async presentHolidaysConfirm(path, uid, data) {
     this.alert = await this.alertController.create({
       header: 'Solicitar vacaciones',
-      message: `Tus vacaciones serán del ${data.startTime.getDate()} al ${data.endTime.getDate()} de ${data.endTime.toLocaleString('es-ES', {month: 'long'})}.<br/><strong>¿Desea continuar?</strong>`,
+      message: `Tus vacaciones serán del ${data.startTime.getDate()} al ${data.endTime.getDate()} de ${data.endTime.toLocaleString('es-ES', { month: 'long' })}.<br/><strong>¿Desea continuar?</strong>`,
       buttons: [
         {
           text: 'Cancelar',
           role: 'Cancel',
           id: 'cancel-button',
           handler: () => {
-            console.log('Cancelado'); 
+            console.log('Cancelado');
           }
         }, {
           text: 'Si, continuar',
@@ -124,13 +124,47 @@ export class InteractionService {
           handler: () => {
             console.log(path, uid, data);
             this.database.askForHolidays(path, uid, data);
-            
+
+          }
+        }
+      ]
+    });
+
+
+    await this.alert.present();
+ 
+
+
+  }
+
+  async presentAcceptHolidays(path, uid, data) {
+    this.alert = await this.alertController.create({
+      header: 'Aceptar vacaciones',
+      message: `¿Quieres aceptar las vacaciones de <strong>${data.nombre}</strong>?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'Cancel',
+          id: 'cancel-button',
+          handler: () => {
+            console.log('Cancelado');
+            return false;
+          }
+        }, {
+          text: 'Si, continuar',
+          id: 'confirm-button',
+          handler: () => {
+            console.log(path, uid, data);
+           
+            this.database.editHolidays<Usuario>(path, uid);
+
           }
         }
       ]
     });
 
     await this.alert.present();
+  
 
   }
 }

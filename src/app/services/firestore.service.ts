@@ -58,6 +58,49 @@ export class FirestoreService {
       })
   }
 
+  editHolidays<type>(path: string, uid: string) {
+    let id: string;
+ 
+
+    const collectionRef = this.firestore
+      .collection(path)
+      .doc(uid).collection('vacaciones').snapshotChanges();
+
+    console.log(collectionRef);
+
+   return collectionRef.subscribe(value => {
+      value.forEach(element => {
+        if (!element.payload.doc.data().petition) {
+          console.log(false);
+          id = element.payload.doc.id;
+          console.log(id);
+          return this.firestore
+            .collection(path)
+            .doc(uid).collection('vacaciones').doc(id).update({
+              petition: true,
+            }).then(() => {
+              return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).valueChanges();
+            });
+        }
+
+      });
+
+    })
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+  }
+
   disableUser<type>(path: string, uid: string, value: boolean) {
     return this.firestore
       .collection(path)
@@ -78,17 +121,17 @@ export class FirestoreService {
 
   }
 
-  getEvents(path: string, uid:string){
-   return this.firestore.collection(path + '/' + uid + '/horarios').snapshotChanges();
+  getEvents(path: string, uid: string) {
+    return this.firestore.collection(path + '/' + uid + '/horarios').snapshotChanges();
   }
-  getHolidays(path: string, uid:string){
+  getHolidays(path: string, uid: string) {
     return this.firestore.collection(path + '/' + uid + '/vacaciones').snapshotChanges();
-   }
+  }
 
-   askForHolidays(path:string, uid:string, data:any){
-     const collection = this.firestore.collection(path + '/' + uid + '/vacaciones');
-     collection.doc(data.title).set(data);
-     return true;
-   }
+  askForHolidays(path: string, uid: string, data: any) {
+    const collection = this.firestore.collection(path + '/' + uid + '/vacaciones');
+    collection.doc(data.title).set(data);
+    return true;
+  }
 
 }
