@@ -32,7 +32,7 @@ export class HolidayModalComponent implements OnInit {
     startTime: new Date(),
     endTime: new Date(),
     turno: 'Vacaciones',
-    petition: false
+    petition: 0
   };
 
 

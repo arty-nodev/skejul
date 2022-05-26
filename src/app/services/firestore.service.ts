@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
-import * as firebase from 'firebase/app'
-import { Usuario } from '../interfaces/usuario.interface';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -60,15 +58,14 @@ export class FirestoreService {
 
   editHolidays<type>(path: string, uid: string) {
     let id: string;
- 
+
 
     const collectionRef = this.firestore
       .collection(path)
       .doc(uid).collection('vacaciones').snapshotChanges();
 
-    console.log(collectionRef);
 
-   return collectionRef.subscribe(value => {
+    collectionRef.subscribe(value => {
       value.forEach(element => {
         if (!element.payload.doc.data().petition) {
           console.log(false);
@@ -77,28 +74,13 @@ export class FirestoreService {
           return this.firestore
             .collection(path)
             .doc(uid).collection('vacaciones').doc(id).update({
-              petition: true,
+              petition: 1,
             }).then(() => {
               return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).valueChanges();
             });
         }
-
       });
-
     })
-
- 
-
-
-
-
-
-
-
-
-
-
-
   }
 
   disableUser<type>(path: string, uid: string, value: boolean) {
@@ -124,6 +106,19 @@ export class FirestoreService {
   getEvents(path: string, uid: string) {
     return this.firestore.collection(path + '/' + uid + '/horarios').snapshotChanges();
   }
+
+  enableHolidays(data){
+    return this.firestore
+    .collection('holidays')
+    .doc('enableHolidays')
+    .update({
+      isAvailable: data
+    })
+  }
+  checkHolidays(){
+    return this.firestore.collection('holidays').doc('enableHolidays').valueChanges();
+  }
+
   getHolidays(path: string, uid: string) {
     return this.firestore.collection(path + '/' + uid + '/vacaciones').snapshotChanges();
   }

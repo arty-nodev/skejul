@@ -4,6 +4,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
   <ion-card  *ngIf="difference > 0">
     <ion-card-header>
       <ion-card-subtitle>Próximas vaciones</ion-card-subtitle>
@@ -22,7 +25,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card  *ngIf="difference <= 0">
+  <ion-card *ngIf="difference <= 0">
     <ion-card-header>
       <ion-card-subtitle>No hay próximas vacaciones a la vista</ion-card-subtitle>
     </ion-card-header>

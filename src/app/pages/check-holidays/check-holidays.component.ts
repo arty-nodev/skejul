@@ -1,5 +1,6 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -14,13 +15,32 @@ export class CheckHolidaysComponent implements AfterViewInit {
   difference: number;
   allHolidays: any[];
   index: number;
+  vacaciones: string;
+  isAvailable:string;
 
-  constructor(private database: FirestoreService, private interaction: InteractionService) {
+  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService) {
     this.allHolidays = [];
     this.index = 0;
+    this.vacaciones = 'Habilitar vacaciones'
   }
   ngAfterViewInit() {
     this.getUsuarios();
+  }
+
+  setHolidays(event){
+    console.log(event.detail.checked);
+    if(event.detail.checked){
+     
+      this.vacaciones = 'Deshabilitar vacaciones'
+      this.database.enableHolidays(event.detail.checked);
+    } else {
+      this.vacaciones = 'Habilitar vacaciones'
+     
+      this.database.enableHolidays(event.detail.checked);
+    }
+    
+
+ 
   }
 
   getUsuarios() {
@@ -47,7 +67,7 @@ export class CheckHolidaysComponent implements AfterViewInit {
           let event: any = snap.payload.doc.data();
           
 
-          if (!event.petition) {
+          if (event.petition == 0) {
      
             
             event.id = snap.payload.doc.id;
@@ -57,12 +77,20 @@ export class CheckHolidaysComponent implements AfterViewInit {
             if (event.startTime.getTime() > new Date().getTime()) {
               this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
               this.allHolidays.push(event);
-        
-
+              console.log(this.allHolidays);
+              
             }
 
-          } else if (event.petition) {
-          this.usuarios.splice(this.index, 1)
+          } else if (event.petition == 1 && this.index > -1) {
+        
+         
+            
+              this.usuarios.splice(this.index, 1);
+            
+            
+          
+          console.log(this.usuarios);
+          
            
            
           }
@@ -82,12 +110,6 @@ export class CheckHolidaysComponent implements AfterViewInit {
   accept(data) {
     console.log(this.usuarios[data]);
     this.interaction.presentAcceptHolidays('usuarios', this.usuarios[data].uid, this.usuarios[data]);
-   
-
-
-        
-    
-
 
 
   }

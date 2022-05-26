@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthService {
 
   loginUser:boolean = false;
-  available: boolean = false;
+
 
   constructor(private auth: AngularFireAuth) { }
 

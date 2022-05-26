@@ -148,7 +148,6 @@ export class InteractionService {
           id: 'cancel-button',
           handler: () => {
             console.log('Cancelado');
-            return false;
           }
         }, {
           text: 'Si, continuar',

@@ -4,6 +4,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-item>
+    <ion-label>{{vacaciones}}</ion-label>
+    <ion-toggle (ionChange)="setHolidays($event)"></ion-toggle>
+  </ion-item>
   <ion-card *ngFor="let usuario of usuarios; index as i" class="card-name">
     <ion-card-header>
       <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
@@ -16,12 +20,21 @@
         <ion-label color="secondary">{{allHolidays[i]?.endTime.getDate()}} - {{allHolidays[i]?.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
       </ion-chip>
       <br>
-      <ion-button (click)="deny(i)" fill="clear" color="danger">
-        <ion-icon name="close-circle-outline" >Denegar</ion-icon>
-      </ion-button>
-      <ion-button (click)="accept(i)" fill="clear" color="success">
-        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-      </ion-button>
+      <ion-row *ngIf="!allHolidays.length == 0">
+        <ion-col align-items-center="true">
+          <ion-button (click)="deny(i)" fill="clear" color="danger">
+            <ion-icon name="close-circle-outline" >Denegar</ion-icon>
+          </ion-button>
+          <ion-button (click)="accept(i)" fill="clear" color="success">
+            <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+     
+       
+      
+
+     
      
       
     </ion-card-content>

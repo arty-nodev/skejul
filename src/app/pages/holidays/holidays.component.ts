@@ -8,7 +8,6 @@ import { HolidayModalComponent } from 'src/app/components/holiday-modal/holiday-
 import { CalendarComponent } from 'ionic2-calendar';
 
 
-
 @Component({
   selector: 'app-holidays',
   templateUrl: './holidays.component.html',
@@ -33,13 +32,14 @@ export class HolidaysComponent implements OnInit {
   constructor(private db: FirestoreService, private route: ActivatedRoute, private auth: AuthService, private router: Router, private modalCtrl: ModalController) {
     
     this.getEstado();
-    this.available = this.auth.available;
+    this.available = false;
+    this.difference = 0;
  
   }
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
-
+    
   }
 
   getEstado(){
@@ -47,6 +47,7 @@ export class HolidaysComponent implements OnInit {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
           console.log('res -->', res);
+         
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
@@ -65,7 +66,25 @@ export class HolidaysComponent implements OnInit {
     })
   }
 
+  
+  doRefresh(event){
+   setTimeout(() => {
+    this.db.checkHolidays().subscribe(value => {
+  
+      this.available = value['isAvailable'];
+      event.target.complete();
+   
+     
+       
+    })
+   
+    
+   }, 2000);
+    
+  }
+
   getHolidays(uid) {
+   
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
@@ -86,6 +105,9 @@ export class HolidaysComponent implements OnInit {
 
       })
     })
+
+    console.log(this.difference);
+    
 
   }
 

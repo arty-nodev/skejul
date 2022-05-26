@@ -18,7 +18,7 @@ export class AdminHomeComponent implements OnInit {
   usuarios: Usuario[];
 
   constructor(private database: FirestoreService, private callNumber: CallNumber, public route: ActivatedRoute, private menu: MenuController, private storage: StorageService, private router: Router, private interaction: InteractionService) {
-    this.usuarios = [];
+    this.usuarios = []; 
   }
 
   ngOnInit() {
@@ -27,10 +27,10 @@ export class AdminHomeComponent implements OnInit {
   }
 
   getUsuarios() {
-    this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
-    
+    this.database.getCollection<Usuario>('usuarios').subscribe((res) => {  
       this.usuarios = res;
     });
+   
   }
 
   async callUser(data) {
