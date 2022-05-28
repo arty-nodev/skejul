@@ -6,7 +6,7 @@
 <ion-content>
   <ion-item>
     <ion-label>{{vacaciones}}</ion-label>
-    <ion-toggle (ionChange)="setHolidays($event)"></ion-toggle>
+    <ion-toggle [(ngModel)]="isAvailable" (ionChange)="setHolidays($event)"></ion-toggle>
   </ion-item>
   <ion-card *ngFor="let usuario of usuarios; index as i" class="card-name">
     <ion-card-header>

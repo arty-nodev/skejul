@@ -137,32 +137,50 @@ export class InteractionService {
 
   }
 
-  async presentAcceptHolidays(path, uid, data) {
-    this.alert = await this.alertController.create({
-      header: 'Aceptar vacaciones',
-      message: `¿Quieres aceptar las vacaciones de <strong>${data.nombre}</strong>?`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'Cancel',
-          id: 'cancel-button',
-          handler: () => {
-            console.log('Cancelado');
-          }
-        }, {
-          text: 'Si, continuar',
-          id: 'confirm-button',
-          handler: () => {
-            console.log(path, uid, data);
-           
-            this.database.editHolidays<Usuario>(path, uid);
+  async presentSolicitHolidays(path:string, uid:string, data:any, value:any) {
+    let opt;
+    let deleted;
 
+    if (value == 1) {
+      opt = 'Aceptar'
+    } else {
+      opt = 'Denegar'
+    }
+    return new Promise(async(resolve) => {
+      this.alert = await this.alertController.create({
+        header: `${opt} vacaciones`,
+        message: `¿${opt} las vacaciones de <strong>${data.nombre}</strong>?`,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'Cancel',
+            id: 'cancel-button',
+            handler: () => {
+              this.alert.dismiss();
+              console.log('Cancelado');
+              return false;
+            }
+          }, {
+            text: 'Si, continuar',
+            id: 'confirm-button',
+            handler: () => {
+             
+             if (value == 1) {
+               
+               this.database.editHolidays<Usuario>(path, uid, value);
+             } else {
+               this.database.deleteHoliday<Usuario>(path, uid, value).then(res => {
+                 if(res) return resolve(true);
+               });
+             }
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
+      await this.alert.present();
+    })
 
-    await this.alert.present();
+   
   
 
   }

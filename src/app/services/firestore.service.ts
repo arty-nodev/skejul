@@ -56,33 +56,6 @@ export class FirestoreService {
       })
   }
 
-  editHolidays<type>(path: string, uid: string) {
-    let id: string;
-
-
-    const collectionRef = this.firestore
-      .collection(path)
-      .doc(uid).collection('vacaciones').snapshotChanges();
-
-
-    collectionRef.subscribe(value => {
-      value.forEach(element => {
-        if (!element.payload.doc.data().petition) {
-          console.log(false);
-          id = element.payload.doc.id;
-          console.log(id);
-          return this.firestore
-            .collection(path)
-            .doc(uid).collection('vacaciones').doc(id).update({
-              petition: 1,
-            }).then(() => {
-              return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).valueChanges();
-            });
-        }
-      });
-    })
-  }
-
   disableUser<type>(path: string, uid: string, value: boolean) {
     return this.firestore
       .collection(path)
@@ -127,6 +100,43 @@ export class FirestoreService {
     const collection = this.firestore.collection(path + '/' + uid + '/vacaciones');
     collection.doc(data.title).set(data);
     return true;
+  }
+
+  
+  editHolidays<type>(path: string, uid: string, info: number) {
+    let id: string;
+
+
+    const collectionRef = this.firestore
+      .collection(path)
+      .doc(uid).collection('vacaciones').snapshotChanges();
+
+
+    collectionRef.subscribe(value => {
+      value.forEach(element => {
+        if (!element.payload.doc.data().petition) {
+          id = element.payload.doc.id;
+  
+          return this.firestore
+            .collection(path)
+            .doc(uid).collection('vacaciones').doc(id).update({
+              petition: info,
+            }).then(() => {
+              return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).valueChanges();
+            });
+        }
+      });
+    })
+  }
+
+  deleteHoliday<type>(path: string, uid: string, id: string){
+   return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).delete().then(() => {
+     return true;
+   }).catch((error) => {
+     console.log(error);
+     return false;
+     
+   });
   }
 
 }

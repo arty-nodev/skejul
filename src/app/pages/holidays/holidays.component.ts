@@ -21,8 +21,8 @@ export class HolidaysComponent implements OnInit {
   eventSource = [];
   available: boolean;
   holidays = {
-    startTime: new Date().getDate() + ' - ' + new Date().toLocaleString('es-ES', { month: 'long' }).toUpperCase(),
-    endTime: new Date().getDate() + 6 + ' - ' + new Date().toLocaleString('es-ES', { month: 'long' }).toUpperCase(),
+    startTime: '',
+    endTime: '',
     allDay: false
   };
 
@@ -70,15 +70,9 @@ export class HolidaysComponent implements OnInit {
   doRefresh(event){
    setTimeout(() => {
     this.db.checkHolidays().subscribe(value => {
-  
       this.available = value['isAvailable'];
-      event.target.complete();
-   
-     
-       
+      event.target.complete();       
     })
-   
-    
    }, 2000);
     
   }
@@ -89,7 +83,9 @@ export class HolidaysComponent implements OnInit {
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
 
-        if (event.petition) {
+        console.log(event.petition);
+        
+        if (event.petition == 1) {
           event.id = snap.payload.doc.id;
           event.startTime = event.startTime.toDate();
           event.endTime = event.endTime.toDate();
@@ -98,15 +94,14 @@ export class HolidaysComponent implements OnInit {
             this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
             this.holidays.startTime = event.startTime.getDate() + ' - ' + event.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
             this.holidays.endTime = event.endTime.getDate() + ' - ' + event.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-          } else {
-            this.difference = 0;
-          }
+          } 
+        } else {
+          this.difference = 0;
         }
 
       })
     })
 
-    console.log(this.difference);
     
 
   }
@@ -144,8 +139,6 @@ export class HolidaysComponent implements OnInit {
 
 
         let newEvent = result.data.event;
-        let start = newEvent.startTime;
-        let end = newEvent.endTime;
         let turno = newEvent.turno;
         console.log(turno);
 
