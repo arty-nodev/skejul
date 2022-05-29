@@ -7,7 +7,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
-  <ion-card  *ngIf="difference == 1">
+  <ion-card  *ngIf="difference != 0">
     <ion-card-header>
       <ion-card-subtitle>Próximas vaciones</ion-card-subtitle>
       <ion-card-title>
@@ -30,7 +30,7 @@
       <ion-card-subtitle>No hay próximas vacaciones a la vista</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content class="ion-text-center" >
-     <ion-button *ngIf="available && difference != 1" (click)="solicitar()" expand="block" fill="clear" shape="round">
+     <ion-button *ngIf="available && difference != 1 " (click)="solicitar()" expand="block" fill="clear" shape="round">
       Solicitar vacaciones
      </ion-button>
     </ion-card-content>

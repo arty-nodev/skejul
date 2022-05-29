@@ -107,46 +107,50 @@ export class InteractionService {
   }
 
   async presentHolidaysConfirm(path, uid, data) {
-    this.alert = await this.alertController.create({
-      header: 'Solicitar vacaciones',
-      message: `Tus vacaciones serán del ${data.startTime.getDate()} al ${data.endTime.getDate()} de ${data.endTime.toLocaleString('es-ES', { month: 'long' })}.<br/><strong>¿Desea continuar?</strong>`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'Cancel',
-          id: 'cancel-button',
-          handler: () => {
-            console.log('Cancelado');
+    return new Promise(async (resolve) => {
+      this.alert = await this.alertController.create({
+        header: 'Solicitar vacaciones',
+        message: `Tus vacaciones serán del ${data.startTime.getDate()} al ${data.endTime.getDate()} de ${data.endTime.toLocaleString('es-ES', { month: 'long' })}.<br/><strong>¿Desea continuar?</strong>`,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'Cancel',
+            id: 'cancel-button',
+            handler: () => {
+              console.log('Cancelado');
+            }
+          }, {
+            text: 'Si, continuar',
+            id: 'confirm-button',
+            handler: () => {
+              console.log(path, uid, data);
+             // this.database.deleteHoliday<Usuario>(path, uid, data)
+              this.database.askForHolidays<Usuario>(path, uid, data).then(res => {
+                if (res) return resolve(true);
+              })
+
+
+            }
           }
-        }, {
-          text: 'Si, continuar',
-          id: 'confirm-button',
-          handler: () => {
-            console.log(path, uid, data);
-            this.database.askForHolidays(path, uid, data);
-
-          }
-        }
-      ]
-    });
+        ]
+      });
 
 
-    await this.alert.present();
- 
+      await this.alert.present();
 
+    })
 
   }
 
-  async presentSolicitHolidays(path:string, uid:string, data:any, value:any) {
+  async presentSolicitHolidays(path: string, uid: string, data: any, value: any) {
     let opt;
-    let deleted;
 
     if (value == 1) {
       opt = 'Aceptar'
     } else {
       opt = 'Denegar'
     }
-    return new Promise(async(resolve) => {
+    return new Promise(async (resolve) => {
       this.alert = await this.alertController.create({
         header: `${opt} vacaciones`,
         message: `¿${opt} las vacaciones de <strong>${data.nombre}</strong>?`,
@@ -164,15 +168,13 @@ export class InteractionService {
             text: 'Si, continuar',
             id: 'confirm-button',
             handler: () => {
-             
-             if (value == 1) {
-               
-               this.database.editHolidays<Usuario>(path, uid, value);
-             } else {
-               this.database.deleteHoliday<Usuario>(path, uid, value).then(res => {
-                 if(res) return resolve(true);
-               });
-             }
+              if (value == 1) {
+                this.database.editHolidays<Usuario>(path, uid, value);
+              } else {
+                this.database.deleteHoliday<Usuario>(path, uid, value).then(res => {
+                  if (res) return resolve(true);
+                });
+              }
             }
           }
         ]
@@ -180,8 +182,8 @@ export class InteractionService {
       await this.alert.present();
     })
 
-   
-  
+
+
 
   }
 }

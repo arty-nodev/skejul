@@ -1,6 +1,5 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { StorageService } from 'src/app/services/storage.service';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { InteractionService } from 'src/app/services/interaction.service';
@@ -27,7 +26,7 @@ export class EditComponent implements OnInit {
   }
 
   user: any;
-  constructor(private storage: StorageService, private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private router: Router) {
+  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private router: Router) {
    
     this.getUser();
      this.auth.estadoUsuario().subscribe(res => {
@@ -49,7 +48,7 @@ export class EditComponent implements OnInit {
   async getUser() {
     this.ngOnInit();
     this.interaction.presentLoading('Cargando datos...')
-    this.user = await this.storage.get('user'); 
+    this.user = localStorage.getItem('user'); 
     console.log(this.user);
        
     this.data.apellidos = this.user.apellidos;

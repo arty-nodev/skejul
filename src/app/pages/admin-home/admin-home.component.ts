@@ -4,7 +4,6 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { CallNumber } from '@ionic-native/call-number/ngx'
 import { ActivatedRoute, Router } from '@angular/router';
-import { StorageService } from 'src/app/services/storage.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -17,7 +16,7 @@ export class AdminHomeComponent implements OnInit {
 
   usuarios: Usuario[];
 
-  constructor(private database: FirestoreService, private callNumber: CallNumber, public route: ActivatedRoute, private menu: MenuController, private storage: StorageService, private router: Router, private interaction: InteractionService) {
+  constructor(private database: FirestoreService, private callNumber: CallNumber, public route: ActivatedRoute, private menu: MenuController, private router: Router, private interaction: InteractionService) {
     this.usuarios = []; 
   }
 
@@ -41,7 +40,7 @@ export class AdminHomeComponent implements OnInit {
   }
 
   editUser(index) {
-    this.storage.set('user', this.usuarios[index]);
+    localStorage.setItem('user', JSON.stringify(this.usuarios[index]));
     this.router.navigate(['edit']);
 
   }

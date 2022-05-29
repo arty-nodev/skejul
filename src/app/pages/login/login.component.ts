@@ -1,5 +1,4 @@
 import { FirestoreService } from './../../services/firestore.service';
-import { StorageService } from './../../services/storage.service';
 import { Router } from '@angular/router';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from './../../services/auth.service';
@@ -12,23 +11,38 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  data:any
+  newObject:any;
+  correo:string;
+  password:string;
 
-  constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private storage: StorageService, private firestore: FirestoreService) {
+  constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private firestore: FirestoreService) {
     this.auth.logout();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.data = localStorage.getItem('info')
+    this.newObject = JSON.parse(this.data);
+    if (this.data != null) {
+      this.correo = this.newObject.correo;
+      this.password = this.newObject.password;
+      this.login(this.newObject.correo, this.newObject.password)
+   
+    }
+   }
 
 
   async login(correo, password) {
 
     await this.interaction.presentLoading("Iniciando sesión");
-    const data = [{ 'correo': correo, 'password': password }]
+    const info = { 'correo': correo, 'password': password }
     this.auth.login(correo, password).then(res => {
 
       if (res) {
         //encrypt -''-
-        this.storage.set('info', data);
+        if (this.data == null) localStorage.setItem('info', JSON.stringify(info));
+        
+        
         this.interaction.closeLoading();
         this.interaction.presentToast("Sesión iniciada con éxito");
         this.auth.loginUser = true;

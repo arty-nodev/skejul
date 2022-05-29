@@ -80,15 +80,15 @@ export class FirestoreService {
     return this.firestore.collection(path + '/' + uid + '/horarios').snapshotChanges();
   }
 
-  enableHolidays(data){
+  enableHolidays(data) {
     return this.firestore
-    .collection('holidays')
-    .doc('enableHolidays')
-    .update({
-      isAvailable: data
-    })
+      .collection('holidays')
+      .doc('enableHolidays')
+      .update({
+        isAvailable: data
+      })
   }
-  checkHolidays(){
+  checkHolidays() {
     return this.firestore.collection('holidays').doc('enableHolidays').valueChanges();
   }
 
@@ -96,13 +96,19 @@ export class FirestoreService {
     return this.firestore.collection(path + '/' + uid + '/vacaciones').snapshotChanges();
   }
 
-  askForHolidays(path: string, uid: string, data: any) {
+  askForHolidays<type>(path: string, uid: string, data: any) {
+    
     const collection = this.firestore.collection(path + '/' + uid + '/vacaciones');
-    collection.doc(data.title).set(data);
-    return true;
+    return collection.doc<type>(data.title).set(data).then(() => {
+      return true;
+    }).catch((err) => {
+      console.log(err);
+      return false;
+    });
+
   }
 
-  
+
   editHolidays<type>(path: string, uid: string, info: number) {
     let id: string;
 
@@ -116,7 +122,7 @@ export class FirestoreService {
       value.forEach(element => {
         if (!element.payload.doc.data().petition) {
           id = element.payload.doc.id;
-  
+
           return this.firestore
             .collection(path)
             .doc(uid).collection('vacaciones').doc(id).update({
@@ -129,14 +135,14 @@ export class FirestoreService {
     })
   }
 
-  deleteHoliday<type>(path: string, uid: string, id: string){
-   return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).delete().then(() => {
-     return true;
-   }).catch((error) => {
-     console.log(error);
-     return false;
-     
-   });
+  deleteHoliday<type>(path: string, uid: string, id: string) {
+    return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).delete().then(() => {
+      return true;
+    }).catch((error) => {
+      console.log(error);
+      return false;
+
+    });
   }
 
 }

@@ -4,7 +4,6 @@ import { FirestoreService } from '../../services/firestore.service';
 import { Component, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +29,7 @@ export class RegisterComponent implements OnInit {
   psw: string = '';
 
 
-  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private storage: StorageService, private menu: MenuController) {
+  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private menu: MenuController) {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -51,17 +50,17 @@ export class RegisterComponent implements OnInit {
 
   async crearNuevoUsuario() {
     this.interaction.presentLoading('Creando usuario...')
-    const resgister = await this.auth.registrarUsuario(this.data).catch(error => {
+    const register = await this.auth.registrarUsuario(this.data).catch(error => {
       this.interaction.closeLoading();
       this.interaction.presentToast('Error al crear usuario');
 
     });
 
-    console.log(resgister);
+    console.log(register);
 
-    if (resgister) {
+    if (register) {
       const path = 'usuarios';
-      const uid = resgister.user.uid;
+      const uid = register.user.uid;
       console.log(uid);
 
       this.data.uid = uid;
@@ -85,25 +84,28 @@ export class RegisterComponent implements OnInit {
 
   async login() {
 
-    this.auth.logout();
-    const data = await this.storage.get('info');
+   
+    const data = localStorage.getItem('info');
+    const object = JSON.parse(data);
 
-    if (data != null) {
-      this.correo = data[0].correo;
-      this.psw = data[0].password;
+    if (object != null) {
+     
+      
       console.log(this.correo, '', this.psw);
 
-      const res = await this.auth.login(this.correo, this.psw).catch(error => {
-        console.log("Error");
+      this.auth.login(object.correo, object.password).then((res) => {
+        if (res) {
+          console.log("respuesta ->", res);
+          window.location.reload();
+          this.interaction.presentToast('Usuario creado con éxito');
+          this.interaction.closeLoading();
+        }
+      }).catch(error => {
+        console.log("Error", error);
 
-      })
+      });
 
-      if (res) {
-        console.log("respuesta ->", res);
-        window.top.location.reload();
-        this.interaction.presentToast('Usuario creado con éxito');
-        this.interaction.closeLoading();
-      }
+     
     }
 
   }

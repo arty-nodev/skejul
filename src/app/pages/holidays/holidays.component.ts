@@ -71,9 +71,11 @@ export class HolidaysComponent implements OnInit {
    setTimeout(() => {
     this.db.checkHolidays().subscribe(value => {
       this.available = value['isAvailable'];
+     
       event.target.complete();       
     })
    }, 2000);
+
     
   }
 
@@ -102,8 +104,6 @@ export class HolidaysComponent implements OnInit {
       })
     })
 
-    
-
   }
 
   getDifferenceOfDays(start, end) {
@@ -114,7 +114,6 @@ export class HolidaysComponent implements OnInit {
     const diffTime = Math.abs(date2.getTime() - date1.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    console.log(diffDays);
 
 
     return diffDays;

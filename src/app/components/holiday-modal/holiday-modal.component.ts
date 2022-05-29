@@ -6,7 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
-import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-holiday-modal',
@@ -42,13 +41,13 @@ export class HolidayModalComponent implements OnInit {
   }
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private modalCtrl: ModalController, private interaction: InteractionService, private db: FirestoreService, private auth: AuthService, private router: Router, private storage: StorageService) {
+  constructor(private modalCtrl: ModalController, private interaction: InteractionService, private db: FirestoreService, private auth: AuthService, private router: Router) {
     this.firstTime = 0;
     this.click = 'Prímer día de vacaciones'
     this.eventSource = [];
     this.rol = '';
     this.uid = '';
-    this.uidUser = this.storage.get('info');
+    this.uidUser = localStorage.getItem('info');
     this.getEstado();
   }
 
@@ -106,7 +105,9 @@ export class HolidayModalComponent implements OnInit {
 
     } else if (this.firstTime == 1) {
 
-      this.interaction.presentHolidaysConfirm('usuarios',this.uid, this.event);
+      this.interaction.presentHolidaysConfirm('usuarios',this.uid, this.event).then(res => {
+      if (res) this.modalCtrl.dismiss();
+      });
       this.interaction.presentToast("Vacaciones solicitadas");
       this.firstTime = 0;
       this.click = 'Primer día de vacaciones'
@@ -133,10 +134,9 @@ export class HolidayModalComponent implements OnInit {
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
         console.log(snap);
-        
         let event: any = snap.payload.doc.data();
         console.log(event.petition);
-        if (event.petition) {
+        if (event.petition == 0) {
           event.id = snap.payload.doc.id;
           event.startTime = event.startTime.toDate();
           event.endTime = event.endTime.toDate();

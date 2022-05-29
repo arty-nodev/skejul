@@ -23,7 +23,6 @@ import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { RegisterComponent } from './backend/register/register.component';
-import { IonicStorageModule } from '@ionic/storage-angular';
 import { EditComponent } from './backend/edit/edit.component';
 import { AppComponent } from './app.component';
 import { ModalComponent } from './components/modal/modal.component';
@@ -34,7 +33,7 @@ import { HolidaysComponent } from './pages/holidays/holidays.component';
 @NgModule({
   declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent, CheckHolidaysComponent],
   entryComponents: [],
-  imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule, IonicStorageModule.forRoot(), NgCalendarModule],
+  imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule,  NgCalendarModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent, {provide: LOCALE_ID, useValue: 'es-ES'}, HolidaysComponent],
   bootstrap: [AppComponent],
 })

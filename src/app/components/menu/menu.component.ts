@@ -47,6 +47,7 @@ export class MenuComponent {
   }
   logout() {
     this.rol = null;
+    localStorage.removeItem('info');
     this.auth.logout();
     this.interaction.presentToast("Sesión cerrada");
     this.auth.loginUser = false;
@@ -68,10 +69,12 @@ export class MenuComponent {
 
   goHome(){
     this.router.navigate(['uhome/'+this.uid])
+    this.menu.close();
   }
 
   goHolidays(){
     this.router.navigate(['holidays/'+this.uid])
+    this.menu.close();
 
   }
 
