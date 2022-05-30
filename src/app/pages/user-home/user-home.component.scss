@@ -34,14 +34,17 @@
        
     }
     
-.monthview-container{
+    .monthview-container{
     height: auto !important;
-}
+    }
 
     td, th {
         border: 0 !important;
-        padding: 15px !important;
+        padding: 10px !important;
       }
+      .weekview-allday-table{
+        display: none !important;
+    }
     }
 
 

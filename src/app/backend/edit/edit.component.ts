@@ -25,10 +25,11 @@ export class EditComponent implements OnInit {
     trabaja: null
   }
 
-  user: any;
+  info: any;
+  user:any;
   constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private router: Router) {
    
-    this.getUser();
+  
      this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -42,13 +43,13 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getUser();
   }
 
   async getUser() {
-    this.ngOnInit();
     this.interaction.presentLoading('Cargando datos...')
-    this.user = localStorage.getItem('user'); 
+    this.info = localStorage.getItem('user'); 
+    this.user = JSON.parse(this.info)
     console.log(this.user);
        
     this.data.apellidos = this.user.apellidos;
@@ -80,7 +81,6 @@ export class EditComponent implements OnInit {
 
   volver(){
     this.router.navigate(['ahome']);
-    this.ngOnInit();
   }
 
 }

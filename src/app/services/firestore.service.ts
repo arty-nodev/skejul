@@ -136,13 +136,24 @@ export class FirestoreService {
   }
 
   deleteHoliday<type>(path: string, uid: string, id: string) {
-    return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).delete().then(() => {
-      return true;
-    }).catch((error) => {
-      console.log(error);
-      return false;
 
-    });
+  
+    this.getHolidays(path, uid).subscribe(res => {
+      if (res.length != 0) {
+        return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).delete().then(() => {
+          return true;
+        }).catch((error) => {
+          console.log(error);
+          return false;
+    
+        });
+      } else return;
+ 
+    })
+
+      
+    
+  
   }
 
 }

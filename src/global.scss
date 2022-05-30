@@ -26,8 +26,9 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 .cal-modal{
-    --height: 80%;
+    --height: 100%;
     --border-radius: 10px;
-    padding: 25px;
+    padding: 10px 25px 25px 25px;
+   top: 0;
 }
 

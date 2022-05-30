@@ -21,6 +21,7 @@ export class HolidayModalComponent implements OnInit {
   uid: string;
   uidUser: any;
   rol: string;
+  idEvent: string;
 
   calendar = {
     mode: 'month',
@@ -47,7 +48,11 @@ export class HolidayModalComponent implements OnInit {
     this.eventSource = [];
     this.rol = '';
     this.uid = '';
-    this.uidUser = localStorage.getItem('info');
+    this.uidUser = '';
+    this.idEvent = '';
+
+
+
     this.getEstado();
   }
 
@@ -66,11 +71,6 @@ export class HolidayModalComponent implements OnInit {
             this.rol = res.cargo;
             this.uid = res.uid;
             this.getHolidays(this.uid);
-          } else {
-            this.rol = res.cargo;
-            console.log(this.uidUser.uid);
-
-            this.getHolidays(this.uidUser.uid);
           }
         })
       } else {
@@ -105,16 +105,17 @@ export class HolidayModalComponent implements OnInit {
 
     } else if (this.firstTime == 1) {
 
-      this.interaction.presentHolidaysConfirm('usuarios',this.uid, this.event).then(res => {
-      if (res) this.modalCtrl.dismiss();
+      this.interaction.presentHolidaysConfirm('usuarios', this.uid, this.event, this.idEvent).then(res => {
+        if (res) {
+          this.modalCtrl.dismiss();
+          this.interaction.presentToast("Vacaciones solicitadas");
+          this.firstTime = 0;
+          this.click = 'Primer día de vacaciones'
+        }
+
       });
-      this.interaction.presentToast("Vacaciones solicitadas");
-      this.firstTime = 0;
-      this.click = 'Primer día de vacaciones'
+
     }
-
-
-
 
     console.table(this.event);
   }
@@ -129,24 +130,29 @@ export class HolidayModalComponent implements OnInit {
     }
 
   }
+
+
   getHolidays(uid) {
     this.eventSource = [];
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
         console.log(snap);
         let event: any = snap.payload.doc.data();
-        console.log(event.petition);
+
         if (event.petition == 0) {
           event.id = snap.payload.doc.id;
-          event.startTime = event.startTime.toDate();
-          event.endTime = event.endTime.toDate();
-          console.log(event);
-          this.eventSource.push(event)
-          this.myCalendar.loadEvents();
+          this.idEvent = event.id;
+          /*  event.startTime = event.startTime.toDate();
+           event.endTime = event.endTime.toDate();
+    
+           console.log(event);
+           this.eventSource.push(event)
+           this.myCalendar.loadEvents(); */
         }
       })
     })
   }
+
 
 
 }

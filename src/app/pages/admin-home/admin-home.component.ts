@@ -50,9 +50,14 @@ export class AdminHomeComponent implements OnInit {
   }
 
   userCalendar(index) {
+    localStorage.setItem('user', JSON.stringify(this.usuarios[index]));
     console.log(this.usuarios[index]);
     this.router.navigate(['uhome/' + this.usuarios[index].uid])
 
+  }
+
+  chatUser(data){
+    window.location.href=`https://wa.me/34${data}`;
   }
 
 

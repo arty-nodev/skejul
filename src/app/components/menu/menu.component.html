@@ -2,7 +2,7 @@
   <ion-list-header>
     <strong>Menu</strong>
   </ion-list-header>
-  <ion-item detail="true" *ngIf="auth.loginUser && rol==='Gerente'" [routerLink]="['/ahome']">
+  <ion-item detail="true" *ngIf="auth.loginUser && rol==='Gerente'" (click)="goAdminHome()">
     <ion-label>Usuarios</ion-label>
     <ion-icon slot="start" name="home-outline"></ion-icon>
   </ion-item>
@@ -10,11 +10,11 @@
     <ion-label>Inicio</ion-label>
     <ion-icon slot="start" name="home-outline"></ion-icon>
   </ion-item>
-  <ion-item detail="true" *ngIf="rol==='Gerente'" [routerLink]="['/register']">
+  <ion-item detail="true" *ngIf="rol==='Gerente'" (click)="goRegister()">
     <ion-label>Nuevo usuario</ion-label>
     <ion-icon slot="start" name="settings-outline"></ion-icon>
   </ion-item>
-  <ion-item detail="true" *ngIf="rol==='Gerente'" [routerLink]="['/exworkers']">
+  <ion-item detail="true" *ngIf="rol==='Gerente'" (click)="goExWorkers()">
     <ion-label>Ex-Trabajadores</ion-label>
     <ion-icon slot="start" name="person-remove-outline"></ion-icon>
   </ion-item>

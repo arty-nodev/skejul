@@ -44,8 +44,6 @@ export class CheckHolidaysComponent implements AfterViewInit {
       this.database.enableHolidays(event.detail.checked);
     }
 
-
-
   }
 
   getUsuarios() {
@@ -68,6 +66,7 @@ export class CheckHolidaysComponent implements AfterViewInit {
         this.index = data.indexOf(element);
     
         
+       if (colSnap.length == 0) this.usuarios.splice(this.index, 1);
        
        
       
@@ -76,7 +75,7 @@ export class CheckHolidaysComponent implements AfterViewInit {
           
          
           let event: any = snap.payload.doc.data();
-          console.log(snap);
+      
           
           //Petition: 0 = pendiente
           //Petition: 1 = aceptada

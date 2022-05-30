@@ -24,18 +24,18 @@ export class UserHomeComponent implements OnInit {
 
   database: any;
   data: any;
-  private uid: string;
+  uid: string;
 
 
   calendar = {
     mode: 'month',
-    currentDate: new Date(),
+    currentDate: new Date()
 
   };
 
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router) {
+  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router) { 
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -45,10 +45,9 @@ export class UserHomeComponent implements OnInit {
             this.rol = res.cargo;
             this.uid = res.uid;
             this.loadEvents(this.uid);
-          } else {
+          }else {
             this.rol = res.cargo;
             console.log(this.uidUser);
-            
             this.loadEvents(this.uidUser);
           }
         })
@@ -81,6 +80,7 @@ export class UserHomeComponent implements OnInit {
         this.myCalendar.loadEvents();
       })
     })
+    this.getHolidays(uid);
    
   }
 
@@ -146,7 +146,6 @@ export class UserHomeComponent implements OnInit {
 
   async addEvent(startTime, endTime, turno) {
 
-    //looking for a tittle --> Same tittle gives error 
     const event = {
       turno: turno,
       startTime: startTime,
@@ -156,8 +155,29 @@ export class UserHomeComponent implements OnInit {
 
     this.db.createNewEvent('usuarios', this.uidUser, event);
 
+  }
 
-
+  getHolidays(uid) {
+    this.eventSource = [];
+    this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
+      colSnap.forEach(snap => {
+        console.log(snap);
+        let event: any = snap.payload.doc.data();
+       
+        if (event.petition == 1) {
+          event.id = snap.payload.doc.id;
+          event.startTime = event.startTime.toDate();
+          event.endTime = event.endTime.toDate();
+          event.title = event.turno;
+          event.allDay = true;
+          event.allDayLabel = 'Turno';
+          console.log(event);
+          localStorage.setItem('holidays', JSON.stringify(event));
+          this.eventSource.push(event)
+          this.myCalendar.loadEvents();
+        }
+      })
+    })
   }
 
 }

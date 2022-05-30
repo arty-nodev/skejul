@@ -48,9 +48,11 @@ export class MenuComponent {
   logout() {
     this.rol = null;
     localStorage.removeItem('info');
+    localStorage.removeItem('user');
     this.auth.logout();
     this.interaction.presentToast("Sesión cerrada");
     this.auth.loginUser = false;
+    this.menu.close();
     this.router.navigate(['login']);
   }
 
@@ -81,6 +83,20 @@ export class MenuComponent {
   
   checkHolidays(){
     this.router.navigate(['checkHolidays']);
+    this.menu.close();
+  }
+
+  goAdminHome(){
+    this.router.navigate(['ahome']);
+    this.menu.close();
+  }
+  goRegister(){
+    this.router.navigate(['register']);
+    this.menu.close();
+  }
+  goExWorkers(){
+    this.router.navigate(['exworkers']);
+    this.menu.close();
   }
 }
 

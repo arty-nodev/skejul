@@ -27,27 +27,33 @@ export class HolidaysComponent implements OnInit {
   };
 
   difference: number;
+  asked: boolean;
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
   constructor(private db: FirestoreService, private route: ActivatedRoute, private auth: AuthService, private router: Router, private modalCtrl: ModalController) {
-    
+
     this.getEstado();
     this.available = false;
     this.difference = 0;
- 
+    this.asked = false;
+
   }
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
-    
+    this.db.checkHolidays().subscribe(value => {
+      this.available = value['isAvailable'];
+
+
+    })
   }
 
-  getEstado(){
+  getEstado() {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
           console.log('res -->', res);
-         
+
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
@@ -66,6 +72,12 @@ export class HolidaysComponent implements OnInit {
     })
   }
 
+
+  /* 
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+  
   
   doRefresh(event){
    setTimeout(() => {
@@ -77,16 +89,20 @@ export class HolidaysComponent implements OnInit {
    }, 2000);
 
     
-  }
+  } */
 
   getHolidays(uid) {
-   
+
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
+      console.log(colSnap.length);
+      
+     if (colSnap.length != 0) {
+         
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
 
         console.log(event.petition);
-        
+
         if (event.petition == 1) {
           event.id = snap.payload.doc.id;
           event.startTime = event.startTime.toDate();
@@ -96,13 +112,22 @@ export class HolidaysComponent implements OnInit {
             this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
             this.holidays.startTime = event.startTime.getDate() + ' - ' + event.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
             this.holidays.endTime = event.endTime.getDate() + ' - ' + event.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-          } 
-        } else {
-          this.difference = 0;
-        }
+          }
+        } else this.asked = true;
+        
 
       })
+     } else {
+      this.difference = 0;
+      this.asked = false;
+     }
+     
     })
+
+    console.log(this.difference);
+    console.log(this.asked);
+    
+    
 
   }
 
