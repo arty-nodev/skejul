@@ -4,26 +4,29 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngFor="let usuario of usuarios; index as i" class="card-name">
-    <ion-card-header>
-      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-button (click)="callUser(usuario.telefono)" fill="clear">
-        <ion-icon name="call-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="chatUser(usuario.telefono)" fill="clear">
-        <ion-icon name="chatbubbles-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="userCalendar(i)" fill="clear">
-        <ion-icon name="calendar-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="editUser(i)" fill="clear">
-        <ion-icon name="color-wand-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="removeUser(i)" fill="clear">
-        <ion-icon name="trash-outline"></ion-icon>
-      </ion-button>      
-    </ion-card-content>
-  </ion-card>
+    <ion-card class="card-name" *ngFor="let usuario of usuarios; index as i" >
+      <ion-card-header>
+        <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button (click)="callUser(usuario.telefono)" fill="clear">
+          <ion-icon name="call-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="chatUser(usuario.telefono)" fill="clear">
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="userCalendar(i)" fill="clear">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="editUser(i)" fill="clear">
+          <ion-icon name="color-wand-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="removeUser(i)" fill="clear">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>      
+      </ion-card-content>
+    </ion-card>
+
+
+
 </ion-content>

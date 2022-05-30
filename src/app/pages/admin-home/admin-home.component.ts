@@ -28,6 +28,7 @@ export class AdminHomeComponent implements OnInit {
   getUsuarios() {
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {  
       this.usuarios = res;
+      
     });
    
   }
@@ -46,6 +47,7 @@ export class AdminHomeComponent implements OnInit {
   }
 
   removeUser(index) {
+   
     this.interaction.presentAlertConfirm(this.usuarios[index]);
   }
 
@@ -59,6 +61,8 @@ export class AdminHomeComponent implements OnInit {
   chatUser(data){
     window.location.href=`https://wa.me/34${data}`;
   }
+
+
 
 
 }

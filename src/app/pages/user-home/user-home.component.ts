@@ -1,3 +1,4 @@
+import { InteractionService } from 'src/app/services/interaction.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from './../../components/modal/modal.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -35,7 +36,7 @@ export class UserHomeComponent implements OnInit {
 
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router) { 
+  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private interaction: InteractionService) { 
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -103,6 +104,11 @@ export class UserHomeComponent implements OnInit {
   }
 
   onEventSelected(event) {
+    if (this.rol == 'Gerente') {
+      console.log(event);
+      
+      this.interaction.presentDeleteHorario(event, this.uidUser);
+    }
     console.log('Event selected: ' + event.startTime + ' - ' + event.endTime + ', ' + event.title);
 
   }
@@ -158,12 +164,9 @@ export class UserHomeComponent implements OnInit {
   }
 
   getHolidays(uid) {
-    this.eventSource = [];
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
-        console.log(snap);
         let event: any = snap.payload.doc.data();
-       
         if (event.petition == 1) {
           event.id = snap.payload.doc.id;
           event.startTime = event.startTime.toDate();
@@ -171,7 +174,6 @@ export class UserHomeComponent implements OnInit {
           event.title = event.turno;
           event.allDay = true;
           event.allDayLabel = 'Turno';
-          console.log(event);
           localStorage.setItem('holidays', JSON.stringify(event));
           this.eventSource.push(event)
           this.myCalendar.loadEvents();

@@ -106,6 +106,41 @@ export class InteractionService {
 
   }
 
+
+  async presentDeleteHorario(event, id) {
+    this.alert = await this.alertController.create({
+      header: 'Eliminar turno',
+      message: 'El turno será eliminado.<br/><strong>¿Desea continuar?</strong>',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'Cancel',
+          id: 'cancel-button',
+          handler: () => {
+            console.log('Cancelado');
+          }
+        }, {
+          text: 'Si, continuar',
+          id: 'confirm-button',
+          handler: () => {
+            
+            this.database.deleteEvent('usuarios', id, event.id).then(res => {
+              if (res) {
+                console.log(res);
+                this.presentToast('Turno eliminado con éxito');
+              } else {
+                this.presentToast('Algo salió mal');
+              }
+            })
+          }
+        }
+      ]
+    });
+
+    await this.alert.present();
+
+  }
+
   async presentHolidaysConfirm(path, uid, event, id) {
     console.log(id);
     return new Promise(async (resolve) => {

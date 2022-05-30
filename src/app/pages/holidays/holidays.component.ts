@@ -72,25 +72,6 @@ export class HolidaysComponent implements OnInit {
     })
   }
 
-
-  /* 
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
-  </ion-refresher>
-  
-  
-  doRefresh(event){
-   setTimeout(() => {
-    this.db.checkHolidays().subscribe(value => {
-      this.available = value['isAvailable'];
-     
-      event.target.complete();       
-    })
-   }, 2000);
-
-    
-  } */
-
   getHolidays(uid) {
 
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
