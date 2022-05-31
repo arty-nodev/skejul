@@ -9,4 +9,5 @@ export interface Usuario {
     cargo: string;
     id_local: number;
     trabaja: boolean;
+    firstLogin: boolean;
 }

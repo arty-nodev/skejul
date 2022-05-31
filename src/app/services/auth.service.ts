@@ -1,3 +1,4 @@
+import { FirestoreService } from 'src/app/services/firestore.service';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -12,7 +13,7 @@ export class AuthService {
   loginUser:boolean = false;
 
 
-  constructor(private auth: AngularFireAuth) { }
+  constructor(private auth: AngularFireAuth, private firestore: FirestoreService) { }
 
   login(correo: string, password: string){
    return this.auth.signInWithEmailAndPassword(correo, password);
@@ -30,8 +31,11 @@ export class AuthService {
     return this.auth.authState;
   }
 
-  updateEmail(uid:string){
-    //Update email or password first time login
+  updatePassword(data:any){
+    this.auth.sendPasswordResetEmail(data.correo).then(() => {
+      this.firestore.editDoc('usuarios', data.uid, data);
+    });
+
   }
 
   checkLogin(){

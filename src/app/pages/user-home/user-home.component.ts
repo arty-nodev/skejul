@@ -28,8 +28,8 @@ export class UserHomeComponent implements OnInit {
   data: any;
   uid: string;
   trabaja: boolean = true;
-  info:string;
-  user:any;
+  info: string;
+  user: any;
 
 
   calendar = {
@@ -46,18 +46,17 @@ export class UserHomeComponent implements OnInit {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
-          console.log('res -->', res);
+
 
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
             this.loadEvents(this.uid);
+
           } else {
             this.rol = res.cargo;
             this.trabaja = this.user.trabaja;
-            console.log(this.trabaja);
 
-            console.log(this.uidUser);
             this.loadEvents(this.uidUser);
           }
         })
@@ -73,7 +72,10 @@ export class UserHomeComponent implements OnInit {
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
-    
+    setTimeout(() => {
+      this.checkFirstTime(this.user)
+
+    }, 1000);
   }
 
   loadEvents(uid) {
@@ -148,10 +150,7 @@ export class UserHomeComponent implements OnInit {
         let start = newEvent.startTime;
         let end = newEvent.endTime;
         let turno = newEvent.turno;
-        console.log(turno);
 
-
-        console.log(newEvent);
 
         this.addEvent(start, end, turno);
         this.eventSource.push(newEvent);
@@ -190,6 +189,16 @@ export class UserHomeComponent implements OnInit {
         }
       })
     })
+  }
+
+  checkFirstTime(res) {
+    console.log(res);
+
+    if (res.firstLogin) {
+      setTimeout(() => {
+        this.interaction.presentReset(res);
+      }, 1000);
+    }
   }
 
 }

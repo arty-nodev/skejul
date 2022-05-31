@@ -44,12 +44,12 @@ export class FirestoreService {
         apellidos: data.apellidos,
         cargo: data.cargo,
         correo: data.correo,
-        horarios: [],
         id_local: data.id_local,
         id_usuario: data.id_usuario,
         nombre: data.nombre,
         password: null,
-        telefono: data.telefono
+        telefono: data.telefono,
+        firstLogin: false
       })
       .then(() => {
         return this.firestore.collection(path).doc<type>(uid).valueChanges();

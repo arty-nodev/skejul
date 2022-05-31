@@ -22,7 +22,8 @@ export class EditComponent implements OnInit {
     uid: null,
     cargo: null,
     id_local: null,
-    trabaja: null
+    trabaja: null,
+    firstLogin: null
   }
 
   info: any;

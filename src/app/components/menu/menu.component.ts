@@ -2,10 +2,10 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
-import { PopoverController, MenuController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import {  MenuController } from '@ionic/angular';
 import { InteractionService } from 'src/app/services/interaction.service';
-import { LoginComponent } from 'src/app/pages/login/login.component';
+
 
 @Component({
   selector: 'app-menu',
@@ -17,6 +17,8 @@ export class MenuComponent {
   cargo: String[] = ['Auxiliar', 'Encargado', 'Gerente'];
   rol: string = null;
   uid:string = '';
+  name: string;
+
 
 
   constructor(public auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
@@ -62,6 +64,7 @@ export class MenuComponent {
     console.log(this.auth.loginUser);
     this.firestore.getDoc<Usuario>(path, id).subscribe(res => {
       if (res && this.auth.loginUser) {
+        this.name = res.nombre;
         this.rol = res.cargo;
         this.uid = res.uid;
         console.log(res.cargo);

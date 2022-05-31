@@ -1,6 +1,6 @@
 <ion-list *ngIf="auth.loginUser">
   <ion-list-header>
-    <strong>Menu</strong>
+    <strong>¡Hola, {{name}}!</strong>
   </ion-list-header>
   <ion-item detail="true" *ngIf="auth.loginUser && rol==='Gerente'" (click)="goAdminHome()">
     <ion-label>Usuarios</ion-label>
@@ -30,4 +30,5 @@
     <ion-label>Salir</ion-label>
     <ion-icon slot="start" name="log-out-outline"></ion-icon>
   </ion-item>
+
 </ion-list>

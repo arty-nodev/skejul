@@ -2,6 +2,7 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Usuario } from '../interfaces/usuario.interface';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class InteractionService {
   loading: any;
   alert: any;
 
-  constructor(public toastController: ToastController, public loadingController: LoadingController, public alertController: AlertController, private database: FirestoreService) { }
+  constructor(public toastController: ToastController, public loadingController: LoadingController, public alertController: AlertController, private database: FirestoreService, private auth: AuthService) { }
 
   //Generamos un toast pasándo un mensaje
   async presentToast(mensaje: string) {
@@ -36,6 +37,35 @@ export class InteractionService {
   //Cerramos el loading
   async closeLoading() {
     await this.loading.dismiss();
+  }
+
+
+
+  async presentReset(data) {
+    this.alert = await this.alertController.create({
+      header: 'Cambio de contraseña',
+      message: 'Su contraseña es la misma que le administró el sistema. Por su seguridad, recomendamos que la cambie ahora.',
+      buttons: [{
+        text: 'Cancelar',
+        role: 'Cancel',
+        id: 'cancel-button',
+        handler: () => {
+          console.log('Cancelado');
+        }
+      },
+      {
+        text: 'Enviar correo',
+        id: 'confirm-button',
+        handler: () => {
+          console.log(data);
+          this.auth.updatePassword(data);
+        }
+      }
+      ]
+    });
+
+    await this.alert.present();
+
   }
 
   async presentAlertConfirm(index) {
@@ -123,7 +153,7 @@ export class InteractionService {
           text: 'Si, continuar',
           id: 'confirm-button',
           handler: () => {
-            
+
             this.database.deleteEvent('usuarios', id, event.id).then(res => {
               if (res) {
                 console.log(res);

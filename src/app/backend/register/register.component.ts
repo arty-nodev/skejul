@@ -25,7 +25,8 @@ export class RegisterComponent implements OnInit {
     uid: null,
     cargo: null,
     id_local: null,
-    trabaja: null
+    trabaja: null,
+    firstLogin: null
   }
 
   correo: string = '';
@@ -86,6 +87,7 @@ export class RegisterComponent implements OnInit {
       this.data.password = null;
       this.data.trabaja = true;
       this.data.id_usuario = this.newID();
+      this.data.firstLogin = true;
       await this.database.createDoc(this.data, path, uid).then(() => {
         this.login();
       });
@@ -98,6 +100,8 @@ export class RegisterComponent implements OnInit {
       this.data.correo = null;
       this.data.id_usuario = null;
       this.data.password = null;
+
+   
     }
 
   }

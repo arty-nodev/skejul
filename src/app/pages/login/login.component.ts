@@ -42,11 +42,11 @@ export class LoginComponent implements OnInit {
         //encrypt -''-
         if (this.data == null) localStorage.setItem('info', JSON.stringify(info));
         
-        
         this.interaction.closeLoading();
         this.interaction.presentToast("Sesión iniciada con éxito");
         this.auth.loginUser = true;
         this.firestore.getDoc<Usuario>('usuarios', res.user.uid).subscribe(res => {
+          localStorage.setItem('user', JSON.stringify(res));
           if (this.auth.loginUser) {
             console.log('dentro');
             if (res.cargo == 'Auxiliar') {
