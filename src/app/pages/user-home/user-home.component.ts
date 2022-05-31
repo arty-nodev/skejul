@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 
 
+
 @Component({
   selector: 'app-user-home',
   templateUrl: './user-home.component.html',
@@ -26,6 +27,9 @@ export class UserHomeComponent implements OnInit {
   database: any;
   data: any;
   uid: string;
+  trabaja: boolean = true;
+  info:string;
+  user:any;
 
 
   calendar = {
@@ -36,18 +40,23 @@ export class UserHomeComponent implements OnInit {
 
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private interaction: InteractionService) { 
+  constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private interaction: InteractionService) {
+    this.info = localStorage.getItem('user');
+    this.user = JSON.parse(this.info)
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
           console.log('res -->', res);
-          
+
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
             this.loadEvents(this.uid);
-          }else {
+          } else {
             this.rol = res.cargo;
+            this.trabaja = this.user.trabaja;
+            console.log(this.trabaja);
+
             console.log(this.uidUser);
             this.loadEvents(this.uidUser);
           }
@@ -64,10 +73,11 @@ export class UserHomeComponent implements OnInit {
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
+    
   }
 
   loadEvents(uid) {
- 
+
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
@@ -82,7 +92,7 @@ export class UserHomeComponent implements OnInit {
       })
     })
     this.getHolidays(uid);
-   
+
   }
 
   next() {
@@ -106,7 +116,7 @@ export class UserHomeComponent implements OnInit {
   onEventSelected(event) {
     if (this.rol == 'Gerente') {
       console.log(event);
-      
+
       this.interaction.presentDeleteHorario(event, this.uidUser);
     }
     console.log('Event selected: ' + event.startTime + ' - ' + event.endTime + ', ' + event.title);
@@ -139,7 +149,7 @@ export class UserHomeComponent implements OnInit {
         let end = newEvent.endTime;
         let turno = newEvent.turno;
         console.log(turno);
-        
+
 
         console.log(newEvent);
 

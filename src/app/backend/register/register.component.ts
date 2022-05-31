@@ -12,6 +12,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
+  usuarios: Usuario[];
+  id_user: number[];
+
   data: Usuario = {
     nombre: null,
     apellidos: null,
@@ -27,9 +30,13 @@ export class RegisterComponent implements OnInit {
 
   correo: string = '';
   psw: string = '';
+  cargos:string [];
 
 
   constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private menu: MenuController) {
+    this.usuarios = []; 
+    this.id_user = [];
+    this.cargos = ['Gerente', 'Auxiliar'];
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -39,14 +46,26 @@ export class RegisterComponent implements OnInit {
         })
       }
     })
-
   }
 
   ngOnInit() {
     this.menu.close();
+    this.getUsuarios();
   }
 
+  getUsuarios() {
+    this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
+      this.usuarios = res;
+      this.usuarios.forEach(element => {
+        this.id_user.push(element.id_usuario);
+      });
+      
+    });
 
+   ;
+    
+
+  }
 
   async crearNuevoUsuario() {
     this.interaction.presentLoading('Creando usuario...')
@@ -66,6 +85,7 @@ export class RegisterComponent implements OnInit {
       this.data.uid = uid;
       this.data.password = null;
       this.data.trabaja = true;
+      this.data.id_usuario = this.newID();
       await this.database.createDoc(this.data, path, uid).then(() => {
         this.login();
       });
@@ -84,13 +104,13 @@ export class RegisterComponent implements OnInit {
 
   async login() {
 
-   
+
     const data = localStorage.getItem('info');
     const object = JSON.parse(data);
 
     if (object != null) {
-     
-      
+
+
       console.log(this.correo, '', this.psw);
 
       this.auth.login(object.correo, object.password).then((res) => {
@@ -105,9 +125,19 @@ export class RegisterComponent implements OnInit {
 
       });
 
-     
+
     }
 
+  }
+
+   newID(){
+    let num = Math.round(Math.random() * (1000-1) + 1);
+    this.id_user.forEach(element => {  
+      if (element == num) {
+        this.newID();
+      } 
+    });
+    return num;
   }
 
 }

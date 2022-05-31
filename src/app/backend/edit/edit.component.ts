@@ -27,8 +27,9 @@ export class EditComponent implements OnInit {
 
   info: any;
   user:any;
+  cargos:string [];
   constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private router: Router) {
-   
+    this.cargos = ['Gerente', 'Auxiliar'];
   
      this.auth.estadoUsuario().subscribe(res => {
       if (res) {
@@ -79,8 +80,5 @@ export class EditComponent implements OnInit {
     })
   }
 
-  volver(){
-    this.router.navigate(['ahome']);
-  }
 
 }

@@ -24,18 +24,14 @@
       </ion-item>
       <ion-item>
         <ion-label>Cargo: </ion-label>
-        <ion-input type="text" [(ngModel)]="data.cargo"></ion-input>
+        <ion-select [(ngModel)]="data.cargo">
+          <ion-select-option *ngFor="let cargo of cargos" [value]="cargo">{{cargo}}</ion-select-option>
+        </ion-select>
       </ion-item>
-  
     </ion-card>
     <ion-button (click)="editarUsuario()" expand="block" fill="clear" shape="round">
       Editar usuario
     </ion-button>
-
-    <ion-button (click)="volver()" expand="block" fill="clear" shape="round">
-        Volver
-    </ion-button>
-
 
 </ion-content>
 

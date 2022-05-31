@@ -4,7 +4,7 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-button *ngIf="rol ==='Gerente'" fill="clear" expand="block" (click)="openCalModal()">
+    <ion-button *ngIf="rol ==='Gerente' && trabaja" fill="clear" expand="block" (click)="openCalModal()">
         Nuevo horario
     </ion-button>
     <ion-row>
