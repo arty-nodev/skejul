@@ -8,6 +8,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './backend/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { UserHomeComponent } from './pages/user-home/user-home.component';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,9 @@ const routes: Routes = [
   },
   {
     path: 'uhome/:uid', component: UserHomeComponent
+  },
+  {
+    path: 'welcome', component: WelcomeComponent
   },
   {
     path: 'register', component: RegisterComponent

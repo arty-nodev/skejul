@@ -1,3 +1,4 @@
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { CheckHolidaysComponent } from './pages/check-holidays/check-holidays.component';
 import { UserHomeComponent } from './pages/user-home/user-home.component';
 import { ExworkersComponent } from './pages/exworkers/exworkers.component';
@@ -9,9 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
 import { AppRoutingModule } from './app-routing.module';
 import { CallNumber } from '@ionic-native/call-number/ngx'
 import { NgCalendarModule } from 'ionic2-calendar';
@@ -30,8 +29,10 @@ import { HolidayModalComponent } from './components/holiday-modal/holiday-modal.
 import { HolidaysComponent } from './pages/holidays/holidays.component';
 
 
+
+
 @NgModule({
-  declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent, CheckHolidaysComponent],
+  declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent, CheckHolidaysComponent, WelcomeComponent],
   entryComponents: [],
   imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule,  NgCalendarModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent, {provide: LOCALE_ID, useValue: 'es-ES'}, HolidaysComponent],

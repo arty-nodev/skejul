@@ -73,7 +73,12 @@ export class MenuComponent {
   }
 
   goHome(){
-    this.router.navigate(['uhome/'+this.uid])
+    this.router.navigate(['welcome']);
+    this.menu.close();
+  }
+
+  goHorarios(){
+    this.router.navigate(['uhome/'+this.uid]);
     this.menu.close();
   }
 
@@ -89,7 +94,7 @@ export class MenuComponent {
     this.menu.close();
   }
 
-  goAdminHome(){
+  goTrabajadores(){
     this.router.navigate(['ahome']);
     this.menu.close();
   }

@@ -46,8 +46,6 @@ export class UserHomeComponent implements OnInit {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
-
-
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
@@ -72,10 +70,6 @@ export class UserHomeComponent implements OnInit {
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
-    setTimeout(() => {
-      this.checkFirstTime(this.user)
-
-    }, 1000);
   }
 
   loadEvents(uid) {
@@ -173,6 +167,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   getHolidays(uid) {
+    this.eventSource = [];
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
@@ -191,14 +186,6 @@ export class UserHomeComponent implements OnInit {
     })
   }
 
-  checkFirstTime(res) {
-    console.log(res);
 
-    if (res.firstLogin) {
-      setTimeout(() => {
-        this.interaction.presentReset(res);
-      }, 1000);
-    }
-  }
 
 }

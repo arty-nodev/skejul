@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle><p>{{saludo.toLowerCase()}}</p></ion-card-subtitle>
+      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="usuario.cargo == 'Auxiliar'">
+      <br>
+      <ion-label>Tu ID es: <strong>{{usuario.id_usuario}}</strong></ion-label>
+      <ion-label>
+        <ion-button (click)="verHorarios()" expand="block" fill="clear">
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
+          Mis horarios
+        </ion-button>
+      </ion-label>
+      <ion-label>
+        <ion-button (click)="verVacaciones()" expand="block" fill="clear">
+          <ion-icon slot="start" name="airplane-outline"></ion-icon>
+          Mis vacaciones
+        </ion-button>
+      </ion-label>
+    </ion-card-content>
+    <ion-card-content *ngIf="usuario.cargo == 'Gerente'">
+      <br>
+      <ion-label>Trabajadores en plantilla: <strong>{{totalUsuarios.length}}</strong></ion-label>
+      <ion-label>
+        <ion-button (click)="verUsuarios()" expand="block" fill="clear" shape="round">
+          <ion-icon slot="start" name="people-outline"></ion-icon>
+          Ver trabajadores
+        </ion-button>
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

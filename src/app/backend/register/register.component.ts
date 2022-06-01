@@ -125,7 +125,7 @@ export class RegisterComponent implements OnInit {
           this.interaction.closeLoading();
         }
       }).catch(error => {
-        console.log("Error", error);
+        this.interaction.presentToast('Algo salió mal');
 
       });
 
