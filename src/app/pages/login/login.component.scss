@@ -1,0 +1,17 @@
+:host ::ng-deep{
+    background-color: var(--ion-background-color, #b0d8f8) !important;
+    ion-item ion-label{
+        color: #ff7348 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    ion-button{
+        color: #2b77b6 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    ion-input{
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    ng-lottie{
+        padding: 10%;
+    }
+}

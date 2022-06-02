@@ -1,0 +1,15 @@
+:host ::ng-deep{
+    ion-label, ion-select{
+        color: #ff7348 !important;
+        font-family: "Courier New", Courier, monospace !important;
+    }
+    ion-input{
+        font-family: "Courier New", Courier, monospace !important;
+    }
+
+    ion-button {
+        color: #2b77b6 !important;
+        font-family: "Courier New", Courier, monospace !important;
+        font-size: 1.5em;
+    }
+}

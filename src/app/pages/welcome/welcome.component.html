@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title></ion-title>
+    <ion-title>Welcome</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle><p>{{saludo.toLowerCase()}}</p></ion-card-subtitle>
-      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}}</ion-card-title>
+      <ion-card-subtitle><p>{{saludo}}</p></ion-card-subtitle>
+      <ion-card-title>{{usuario.nombre}}</ion-card-title>
     </ion-card-header>
     <ion-card-content *ngIf="usuario.cargo == 'Auxiliar'">
       <br>

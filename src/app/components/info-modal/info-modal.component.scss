@@ -1,0 +1,22 @@
+:host ::ng-deep{
+    ion-title{
+        color: #ff7348;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+
+    ion-card-title{
+        text-align: center;
+        color: #2b77b6 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 1.3em;
+    }
+
+    ion-icon{
+        color: #ff7348;
+    }
+
+    ion-label{
+        color: #2b77b6 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+}

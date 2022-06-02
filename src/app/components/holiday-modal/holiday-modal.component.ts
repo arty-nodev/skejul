@@ -93,7 +93,7 @@ export class HolidayModalComponent implements OnInit {
 
 
   onViewTitleChanged(tittle) {
-    this.viewTitle = tittle;
+    this.viewTitle = tittle.toUpperCase();
   }
 
   solicitHoliday() {

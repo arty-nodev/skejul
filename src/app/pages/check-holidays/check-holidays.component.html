@@ -14,10 +14,10 @@
     </ion-card-header>
     <ion-card-content>
       <ion-chip>
-        <ion-label color="secondary">{{allHolidays[i]?.startTime.getDate()}} - {{allHolidays[i]?.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
+        <ion-label>{{allHolidays[i]?.startTime.getDate()}} - {{allHolidays[i]?.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
       </ion-chip>
       <ion-chip>
-        <ion-label color="secondary">{{allHolidays[i]?.endTime.getDate()}} - {{allHolidays[i]?.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
+        <ion-label>{{allHolidays[i]?.endTime.getDate()}} - {{allHolidays[i]?.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase()}}</ion-label>
       </ion-chip>
       <br>
       <ion-row *ngIf="!allHolidays.length == 0">

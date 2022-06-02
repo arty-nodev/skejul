@@ -1,8 +1,32 @@
-ion-refresher ion-refresher-content {
-    --color:#FFF !important;
-    
-    .refresher-pulling-text, .refresher-refreshing-text, .refresher-refreshing-icon, .refresher-pulling-icon {
-    
-      color: #fff !important;
+:host ::ng-deep {
+  ion-content{
+    --overflow: hidden;
+
+  }
+  ion-card-subtitle {
+    text-align: center;
+    color: #ff7348 !important;
+    font-family: "Courier New", Courier, monospace !important;
+    font-size: 1.3em;
+  }
+  ion-card-title{
+    text-align: center;
+    ion-label{
+      color: #2b77b6 !important;
+      font-family: 'Courier New', Courier, monospace !important;
     }
   }
+  
+  ion-card-content{
+    font-size: 1.3em;
+    font-family: 'Courier New', Courier, monospace !important;
+    h1{
+      font-weight: bold;
+    }
+    ion-button{
+      color: #2b77b6 !important;
+      font-family: 'Courier New', Courier, monospace !important;
+      font-size: 1.2em;
+    }
+  }
+}

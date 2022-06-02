@@ -6,6 +6,7 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { ModalController } from '@ionic/angular';
 import { HolidayModalComponent } from 'src/app/components/holiday-modal/holiday-modal.component';
 import { CalendarComponent } from 'ionic2-calendar';
+import { AnimationOptions } from 'ngx-lottie';
 
 
 @Component({
@@ -28,6 +29,11 @@ export class HolidaysComponent implements OnInit {
 
   difference: number;
   asked: boolean;
+  titleHoliday: string;
+
+  options: AnimationOptions = {
+    path: ''
+  }
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
   constructor(private db: FirestoreService, private route: ActivatedRoute, private auth: AuthService, private router: Router, private modalCtrl: ModalController) {
@@ -36,6 +42,7 @@ export class HolidaysComponent implements OnInit {
     this.available = false;
     this.difference = 0;
     this.asked = false;
+
 
   }
 
@@ -46,6 +53,9 @@ export class HolidaysComponent implements OnInit {
 
 
     })
+
+
+
   }
 
   getEstado() {
@@ -73,42 +83,60 @@ export class HolidaysComponent implements OnInit {
   }
 
   getHolidays(uid) {
-
+    this.eventSource = []
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       console.log(colSnap.length);
-      
-     if (colSnap.length != 0) {
-         
-      colSnap.forEach(snap => {
-        let event: any = snap.payload.doc.data();
 
-        console.log(event.petition);
+      if (colSnap.length != 0) {
 
-        if (event.petition == 1) {
-          event.id = snap.payload.doc.id;
-          event.startTime = event.startTime.toDate();
-          event.endTime = event.endTime.toDate();
-          console.log(event);
-          if (event.startTime.getTime() > new Date().getTime()) {
-            this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
-            this.holidays.startTime = event.startTime.getDate() + ' - ' + event.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-            this.holidays.endTime = event.endTime.getDate() + ' - ' + event.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+        colSnap.forEach(snap => {
+          let event: any = snap.payload.doc.data();
+
+          console.log(event.petition);
+
+          if (event.petition == 1) {
+            event.id = snap.payload.doc.id;
+            event.startTime = event.startTime.toDate();
+            event.endTime = event.endTime.toDate();
+            console.log(event);
+            if (event.startTime.getTime() > new Date().getTime()) {
+              this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
+              this.holidays.startTime = event.startTime.getDate() + ' - ' + event.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+              this.holidays.endTime = event.endTime.getDate() + ' - ' + event.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+              this.options = {
+                ...this.options,
+                path: 'assets/yes.json'
+              }
+            }
+          } else {
+            this.options = {
+              ...this.options,
+              path: 'assets/wait.json'
+            }
+            this.titleHoliday = 'Tus vacaciones están pendientes de revisar'
+            this.asked = true;
           }
-        } else this.asked = true;
-        
 
-      })
-     } else {
-      this.difference = 0;
-      this.asked = false;
-     }
-     
+
+        })
+      } else {
+        this.options = {
+          ...this.options,
+          path: 'assets/ask.json'
+        }
+        this.titleHoliday = 'Aún no has elegido tus vacaciones o han sido rechazadas'
+        this.difference = 0;
+        this.asked = false;
+      }
+
     })
 
     console.log(this.difference);
     console.log(this.asked);
-    
-    
+
+
+
+
 
   }
 

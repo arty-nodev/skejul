@@ -1,9 +1,11 @@
+import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { FirestoreService } from '../../services/firestore.service';
 import { Component, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { AES } from 'crypto-js';
 
 @Component({
   selector: 'app-register',
@@ -28,13 +30,14 @@ export class RegisterComponent implements OnInit {
     trabaja: null,
     firstLogin: null
   }
+  decrypt:string;
 
   correo: string = '';
   psw: string = '';
   cargos:string [];
 
 
-  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private menu: MenuController) {
+  constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private menu: MenuController, private router: Router) {
     this.usuarios = []; 
     this.id_user = [];
     this.cargos = ['Gerente', 'Auxiliar'];
@@ -70,6 +73,9 @@ export class RegisterComponent implements OnInit {
 
   async crearNuevoUsuario() {
     this.interaction.presentLoading('Creando usuario...')
+    this.data.password = this.data.nombre+123;
+    console.log(this.data.password);
+    
     const register = await this.auth.registrarUsuario(this.data).catch(error => {
       this.interaction.closeLoading();
       this.interaction.presentToast('Error al crear usuario');
@@ -114,13 +120,13 @@ export class RegisterComponent implements OnInit {
 
     if (object != null) {
 
+      this.decrypt = CryptoJS.AES.decrypt(object['password'], 'crypt').toString(CryptoJS.enc.Utf8);
 
-      console.log(this.correo, '', this.psw);
-
-      this.auth.login(object.correo, object.password).then((res) => {
+      this.auth.login(object.correo, this.decrypt).then((res) => {
         if (res) {
           console.log("respuesta ->", res);
-          window.location.reload();
+          window.top.location.reload();
+          this.router.navigate(['register']);
           this.interaction.presentToast('Usuario creado con éxito');
           this.interaction.closeLoading();
         }

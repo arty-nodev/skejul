@@ -38,7 +38,7 @@ export class ExworkersComponent implements OnInit {
     localStorage.setItem('user', JSON.stringify(this.usuarios[index]));
     const modal = await this.modalCtrl.create({
       component: InfoModalComponent,
-      cssClass: 'cal-modal',
+      cssClass: 'cal-modal-info',
       backdropDismiss: false
     })
 

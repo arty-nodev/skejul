@@ -5,6 +5,7 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AES } from 'crypto-js';
+import { AnimationOptions } from 'ngx-lottie';
 
 
 
@@ -22,6 +23,9 @@ export class LoginComponent implements OnInit {
   encrypt: string;
   decrypt: any;
 
+  options: AnimationOptions = {
+    path: 'assets/calendar.json'
+  }
   constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private firestore: FirestoreService) {
     this.auth.logout();
     this.correo = '';
@@ -33,8 +37,8 @@ export class LoginComponent implements OnInit {
     this.data = localStorage.getItem('info')
     this.newObject = JSON.parse(this.data);
     if (this.data != null) {
-      // this.decrypt = CryptoJS.AES.decrypt(this.encrypt, this.newObject.password);
-      // this.login(this.newObject.correo, this.newObject.password)
+      this.decrypt = CryptoJS.AES.decrypt(this.newObject['password'], 'crypt').toString(CryptoJS.enc.Utf8);
+      this.login(this.newObject.correo, this.decrypt)
 
     }
   }
@@ -49,19 +53,18 @@ export class LoginComponent implements OnInit {
       if (res) {
 
         if (this.data == null) {
-   
+
           this.encrypt = CryptoJS.AES.encrypt(info['password'], 'crypt').toString();
           info['password'] = this.encrypt;
-          
-       //this.decrypt = CryptoJS.AES.decrypt(this.encrypt, 'crypt').toString(CryptoJS.enc.Utf8);
-    
-      
+
           localStorage.setItem('info', JSON.stringify(info));
         }
 
         this.interaction.closeLoading();
         this.interaction.presentToast("Sesión iniciada con éxito");
         this.auth.loginUser = true;
+        this.correo = '';
+        this.password = '';
         this.firestore.getDoc<Usuario>('usuarios', res.user.uid).subscribe(res => {
           localStorage.setItem('user', JSON.stringify(res));
           if (this.auth.loginUser) {

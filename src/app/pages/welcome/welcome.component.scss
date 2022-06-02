@@ -1,3 +1,34 @@
-p {
-    font-size: 1.2rem;
+:host ::ng-deep{
+    ion-card-subtitle{
+        color: #ff7348 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    ion-card-title{
+        color: #2b77b6 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 2.3em;
+        font-weight: 300;
+        text-align: center;
+    }
+    ion-label{
+        font-size: 1.2em;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    ion-button{
+        color: #ff7348 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 1.2em;
+        ion-icon{
+            font-size: 1em;
+            color: #2b77b6 !important;
+            padding: 5px;
+        }
+    }
+    p {
+        font-size: 1.2rem;
+    }
+
+    ng-lottie svg{
+        height: 30%;
+    }
 }

@@ -1,5 +1,12 @@
 :host ::ng-deep{
-    
+    ion-card-title{
+        color: #2b77b6 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 1.6em;
+    }
+    ion-button {
+        color: #ff7348 !important;
+    }
     .card-name{
     padding: 10px;
     ion-button{

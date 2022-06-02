@@ -3,8 +3,9 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { Component } from '@angular/core';
-import {  MenuController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { AnimationOptions } from 'ngx-lottie';
 
 
 @Component({
@@ -16,10 +17,13 @@ export class MenuComponent {
 
   cargo: String[] = ['Auxiliar', 'Encargado', 'Gerente'];
   rol: string = null;
-  uid:string = '';
+  uid: string = '';
   name: string;
+  menuOpen:any;
 
-
+  options: AnimationOptions = {
+    path: 'assets/hello.json'
+  }
 
   constructor(public auth: AuthService, private interaction: InteractionService, private router: Router, private menu: MenuController, private firestore: FirestoreService) {
     this.getEstado();
@@ -28,7 +32,6 @@ export class MenuComponent {
 
   ngOnInit() {
     this.menu.swipeGesture(false);
-    this.menu.close();
 
   }
 
@@ -51,11 +54,17 @@ export class MenuComponent {
     this.rol = null;
     localStorage.removeItem('info');
     localStorage.removeItem('user');
+    localStorage.removeItem('holidays');
     this.auth.logout();
     this.interaction.presentToast("Sesión cerrada");
     this.auth.loginUser = false;
     this.menu.close();
     this.router.navigate(['login']);
+
+    this.interaction.presentLoading("Cerrando sesión").then(() => {
+      window.top.location.reload();
+    });
+
   }
 
   getCargo(uid: string) {
@@ -72,37 +81,37 @@ export class MenuComponent {
     })
   }
 
-  goHome(){
+  goHome() {
     this.router.navigate(['welcome']);
     this.menu.close();
   }
 
-  goHorarios(){
-    this.router.navigate(['uhome/'+this.uid]);
+  goHorarios() {
+    this.router.navigate(['uhome/' + this.uid]);
     this.menu.close();
   }
 
-  goHolidays(){
-    this.router.navigate(['holidays/'+this.uid])
+  goHolidays() {
+    this.router.navigate(['holidays/' + this.uid])
     this.menu.close();
 
   }
 
-  
-  checkHolidays(){
+
+  checkHolidays() {
     this.router.navigate(['checkHolidays']);
     this.menu.close();
   }
 
-  goTrabajadores(){
+  goTrabajadores() {
     this.router.navigate(['ahome']);
     this.menu.close();
   }
-  goRegister(){
+  goRegister() {
     this.router.navigate(['register']);
     this.menu.close();
   }
-  goExWorkers(){
+  goExWorkers() {
     this.router.navigate(['exworkers']);
     this.menu.close();
   }

@@ -99,7 +99,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   onViewTitleChanged(tittle) {
-    this.viewTitle = tittle;
+    this.viewTitle = tittle.toUpperCase();
   }
 
   onTimeSelected(ev) {

@@ -9,11 +9,11 @@
       <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}} </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-button (click)="acceptUser(i)">
+      <ion-button (click)="acceptUser(i)" fill="clear">
         Habilitar de nuevo
         <ion-icon slot="end" name="lock-open-outline"></ion-icon>
       </ion-button>  
-      <ion-button (click)="infoUser(i)">
+      <ion-button (click)="infoUser(i)" fill="clear">
         <ion-icon name="information-circle-outline" size="large"></ion-icon>
       </ion-button>     
     </ion-card-content>

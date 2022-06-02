@@ -27,14 +27,18 @@ import { AppComponent } from './app.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { HolidayModalComponent } from './components/holiday-modal/holiday-modal.component';
 import { HolidaysComponent } from './pages/holidays/holidays.component';
+import { LottieModule } from 'ngx-lottie';
+import  player  from 'lottie-web'
 
-
+export function playerFactory(){
+  return player;
+}
 
 
 @NgModule({
   declarations: [AppComponent, RegisterComponent, MenuComponent, AdminHomeComponent, LoginComponent, EditComponent, ExworkersComponent, UserHomeComponent, ModalComponent, HolidaysComponent, HolidayModalComponent, CheckHolidaysComponent, WelcomeComponent],
   entryComponents: [],
-  imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule,  NgCalendarModule],
+  imports: [BrowserModule,CommonModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule,FormsModule,  NgCalendarModule, LottieModule.forRoot({player:playerFactory})],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CallNumber, LoginComponent, {provide: LOCALE_ID, useValue: 'es-ES'}, HolidaysComponent],
   bootstrap: [AppComponent],
 })

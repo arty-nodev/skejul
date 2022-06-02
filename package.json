@@ -46,6 +46,8 @@
     "firebase": "^9.6.10",
     "firebase-admin": "^10.0.2",
     "ionic2-calendar": "^0.6.9",
+    "lottie-web": "^5.9.4",
+    "ngx-lottie": "^8.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"

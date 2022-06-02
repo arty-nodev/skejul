@@ -5,16 +5,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>Correo</ion-label>
-    <ion-input type="email" [(ngModel)]="correo"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Contraseña</ion-label>
-    <ion-input type="password"  [(ngModel)]="password"></ion-input>
-  </ion-item>
-
-  <ion-button type="submit" (click)="login(correo,password)" expand="block" fill="clear" shape="round">
-    Iniciar sesión
-  </ion-button>
+  <ion-card>
+   
+      <ng-lottie [options]="options"></ng-lottie>
+    <ion-item id="login">
+      <ion-label>Correo</ion-label>
+      <ion-input type="email" [(ngModel)]="correo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="tertiary">Contraseña</ion-label>
+      <ion-input type="password"  [(ngModel)]="password"></ion-input>
+    </ion-item>
+    <ion-button type="submit" (click)="login(correo,password)" expand="block" fill="clear" shape="round">
+      Iniciar sesión
+    </ion-button>
+  </ion-card>
+ 
 </ion-content>

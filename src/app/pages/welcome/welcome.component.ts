@@ -1,9 +1,11 @@
+import { IonicRouteStrategy } from '@ionic/angular';
 import { InteractionService } from './../../services/interaction.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
+
 
 @Component({
   selector: 'app-welcome',
@@ -15,6 +17,8 @@ export class WelcomeComponent implements OnInit {
   usuario:any;
   totalUsuarios: any;
   saludo:string;
+  
+
   
   constructor(private database: FirestoreService, private auth: AuthService, private router: Router, private interaction: InteractionService) {
     this.usuario = []; 
