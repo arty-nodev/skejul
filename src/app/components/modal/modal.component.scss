@@ -1,5 +1,19 @@
 :host ::ng-deep{
 
+    ion-title, ion-label{
+        color: #2b77b6 !important;
+        font-family: "Courier New", Courier, monospace !important;
+    }
+
+    h2{
+        color: #2b77b6 !important;
+        font-family: "Courier New", Courier, monospace !important;
+        font-size: 1.3em;
+    }
+
+    ion-button, ion-icon{
+        color: #ff7348 !important;
+    }
     .monthview-container{
         height: auto !important;
     }
@@ -19,16 +33,16 @@
         border-radius: 50px;
     }
     .monthview-disabled {
-        background-color: rgb(252, 129, 160) !important;
+        background-color: #ff7348 !important;
        
     }
     .monthview-selected{
-        background-color: var(--ion-color-success) !important;
+        background-color: #2b77b6 !important;
         border-radius: 50px;
     }
 
     .monthview-current {
-        background-color: rgb(159, 190, 194) !important;
+        background-color: #7198b8 !important;
         border-radius: 50px;
        
     }
@@ -39,6 +53,10 @@
       }
       .weekview-allday-table{
         display: none !important;
+    }
+
+    calendar > ion-item{
+        font-family: "Courier New", Courier, monospace !important;
     }
 }
 

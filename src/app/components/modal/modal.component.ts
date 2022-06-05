@@ -1,4 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
+import { InteractionService } from 'src/app/services/interaction.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { format, parse, parseISO } from 'date-fns';
@@ -22,12 +23,12 @@ export class ModalComponent implements AfterViewInit {
   dateSelected = new Date();
   dateContainer = new Date();
   selected: boolean;
-  turno:string = '';
-  uid:string;
-  uidUser:string;
-  eventSource:any [];
-  info:any;
-  user:any;
+  turno: string = '';
+  uid: string;
+  uidUser: string;
+  eventSource: any[];
+  info: any;
+  user: any;
   startHoliday: Date;
   endHoliday: Date;
   holiday: string;
@@ -47,70 +48,80 @@ export class ModalComponent implements AfterViewInit {
   };
 
   markDisabled = (date: Date) => {
-    let current = new Date();
-    this.holiday = localStorage.getItem('holidays')
-    this.newHoliday = JSON.parse(this.holiday);  
-    
-    
-    return date <= new Date(this.newHoliday.endTime) && date >= new Date(this.newHoliday.startTime);
+
+    if (localStorage.getItem('holidays') != null) {
+
+      this.holiday = localStorage.getItem('holidays')
+      this.newHoliday = JSON.parse(this.holiday);
+
+      return date <= new Date(this.newHoliday.endTime) && date >= new Date(this.newHoliday.startTime);
+    }
   }
 
 
-  turnos = ['Apertura', 'Medio turno', 'Turno par(1)','Turno par(2)', 'Turno de tarde', 'Turno de apoyo', 'Cierre de basuras', 'Cierre de panes', 'Cierre de terraza', 'Cierre de frente', 'Cierre de salón', 'Cierre de baños', 'Cierre de cocina', 'Friegue']
+  turnos = ['Apertura', 'Medio turno', 'Turno par(1)', 'Turno par(2)', 'Turno de tarde', 'Turno de apoyo', 'Cierre de basuras', 'Cierre de panes', 'Cierre de terraza', 'Cierre de frente', 'Cierre de salón', 'Cierre de baños', 'Cierre de cocina', 'Friegue']
 
- 
+
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
-  constructor(private modalCtrl: ModalController, private auth: AuthService, private db: FirestoreService) {
+  constructor(private modalCtrl: ModalController, private auth: AuthService, private db: FirestoreService, private router: Router) {
     this.viewTitle = 'Hora de entrada';
     this.firstTime = 0;
     this.selected = false;
+    //Recogemos la información del usuario
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
           console.log('res -->', res);
-          
+
           if (res && res.cargo != 'Gerente') {
-            
+
             this.uid = res.uid;
             this.loadEvents(this.uid);
-          }else {
-          
-            console.log(this.uidUser);
+          } else {
+
+           
             this.loadEvents(this.uidUser);
           }
         })
-      } 
+      }
     })
+
   }
 
   ngAfterViewInit() {
+    //Cargamos información necesaria una vez el componente esté cargado
     setTimeout(() => {
       this.modalReady = true;
       this.selected = true;
-      this.info = localStorage.getItem('user'); 
+      this.info = localStorage.getItem('user');
       this.user = JSON.parse(this.info)
       this.uidUser = this.user.uid;
 
     }, 0);
   }
 
+  //Función para el registro de un nuevo turno para el usuario
   save() {
 
     if (this.firstTime == 0) {
       this.firstTime++;
       this.viewTitle = 'Hora de salida';
       this.event.turno = this.turno;
-     
+
     } else if (this.firstTime == 1) {
       this.event.turno = this.turno;
-      this.modalCtrl.dismiss({ event: this.event })
       this.firstTime = 0;
       this.viewTitle = 'Hora de entrada';
+      this.modalCtrl.dismiss({ event: this.event })
+      let currentUrl = this.router.url;
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate([currentUrl]);
     }
 
-    console.table(this.event);
   }
 
+  //Se selecciona el día de inicio del turno
   onTimeSelected(ev) {
 
     this.dateSelected = ev.selectedTime;
@@ -118,36 +129,34 @@ export class ModalComponent implements AfterViewInit {
 
   }
 
+  //Función para cerrar el componente
   close() {
     this.modalCtrl.dismiss();
   }
 
+
+  //Función para asignar a que hora entra y sale el usuario de su turno
   dateChanged(date) {
-    
+
     const newDate = new Date(date)
-    
-     
     newDate.setDate(this.event.startTime.getDate())
     newDate.setMonth(this.event.startTime.getMonth())
     newDate.setFullYear(this.event.startTime.getFullYear())
 
-    console.log('newDate date',newDate);
-
-    
     if (this.firstTime == 0) {
       this.event.startTime.setTime(newDate.getTime())
       this.dateContainer = this.event.startTime;
-      console.log(this.dateContainer);
-      
+     
     } else {
-      console.log('until endTime',this.dateContainer);
-      
-     this.event.endTime.setTime(newDate.getTime())
+     
+      this.event.endTime.setTime(newDate.getTime())
       this.event.startTime = this.dateContainer;
     }
 
   }
 
+
+  //Funciones del calendario
   next() {
     this.myCalendar.slideNext();
   }
@@ -157,24 +166,14 @@ export class ModalComponent implements AfterViewInit {
 
 
   onViewTitleChanged(tittle) {
-    this.monthTitle = tittle;
+    this.monthTitle = tittle.toUpperCase();
   }
 
-  onEventSelected(event) {
-    console.log('Event selected: ' + event.startTime + ' - ' + event.endTime + ', ' + event.title);
-
-  }
-
-  onCurrentDateChanged(event: Date) {
-
-    console.log('Current date change: ' + event);
 
 
-  }
-
-  
+  //Se cargan todos los horarios del usuario
   loadEvents(uid) {
- 
+    this.eventSource = [];
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
@@ -189,15 +188,17 @@ export class ModalComponent implements AfterViewInit {
       })
     })
     this.getHolidays(uid);
-   
+
   }
+
+  //Se cargan las vaciones del usuario
   getHolidays(uid) {
-    this.eventSource = [];
+
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
-        console.log(snap);
+        
         let event: any = snap.payload.doc.data();
-       
+
         if (event.petition == 1) {
           event.id = snap.payload.doc.id;
           event.startTime = event.startTime.toDate();
@@ -207,7 +208,7 @@ export class ModalComponent implements AfterViewInit {
           event.title = event.turno;
           event.allDay = true;
           event.allDayLabel = 'Turno';
-          console.log(event);
+         
           this.eventSource.push(event)
           this.myCalendar.loadEvents();
         }

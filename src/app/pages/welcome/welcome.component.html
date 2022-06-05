@@ -12,7 +12,8 @@
     </ion-card-header>
     <ion-card-content *ngIf="usuario.cargo == 'Auxiliar'">
       <br>
-      <ion-label>Tu ID es: <strong>{{usuario.id_usuario}}</strong></ion-label>
+      <ion-label *ngIf="id_usuario != null">Tu ID es: <strong>{{usuario.id_usuario}}</strong></ion-label>
+      <ion-label *ngIf="id_usuario == null">Actualmente ya no trabajas aquí, pero todavía puedes ver tus antiguos horarios</ion-label>
       <ion-label>
         <ion-button (click)="verHorarios()" expand="block" fill="clear">
           <ion-icon slot="start" name="calendar-outline"></ion-icon>
@@ -20,7 +21,7 @@
         </ion-button>
       </ion-label>
       <ion-label>
-        <ion-button (click)="verVacaciones()" expand="block" fill="clear">
+        <ion-button *ngIf="trabaja" (click)="verVacaciones()" expand="block" fill="clear">
           <ion-icon slot="start" name="airplane-outline"></ion-icon>
           Mis vacaciones
         </ion-button>
@@ -35,6 +36,7 @@
           Ver trabajadores
         </ion-button>
       </ion-label>
+      
     </ion-card-content>
   </ion-card>
 </ion-content>

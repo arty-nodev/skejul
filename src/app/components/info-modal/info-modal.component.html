@@ -26,12 +26,13 @@
         </ion-button>
         <ion-label>Horarios</ion-label>
       </ion-item> 
-      <ion-item>
+      <ion-item *ngIf="id_user != null">
         <ion-button fill="clear">
           <ion-icon name="id-card-outline"></ion-icon>
         </ion-button>
         <ion-label>{{user.id_usuario}}</ion-label>
-      </ion-item>     
+        <ion-button (click)="clearID(user)" fill="clear">Liberar ID</ion-button>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 </ion-content>

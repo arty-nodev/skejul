@@ -25,6 +25,7 @@ export class AdminHomeComponent implements OnInit {
     this.menu.close();
   }
 
+  //Se recogen todos los usuarios
   getUsuarios() {
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {  
       this.usuarios = res;
@@ -33,6 +34,7 @@ export class AdminHomeComponent implements OnInit {
    
   }
 
+  //Función para llamar al usuario
   async callUser(data) {
     await this.callNumber.callNumber(data, true)
       .then(res => console.log('Launched dialer!', res))
@@ -40,24 +42,28 @@ export class AdminHomeComponent implements OnInit {
 
   }
 
+  //Función para ir a la edición del usuario
   editUser(index) {
     localStorage.setItem('user', JSON.stringify(this.usuarios[index]));
     this.router.navigate(['edit']);
 
   }
 
+  //Función para dar de baja un usuario
   removeUser(index) {
    
     this.interaction.presentAlertConfirm(this.usuarios[index]);
   }
 
+  //Función para acceder a los horarios del trabajador seleccionado
   userCalendar(index) {
     localStorage.setItem('user', JSON.stringify(this.usuarios[index]));
-    console.log(this.usuarios[index]);
+  
     this.router.navigate(['uhome/' + this.usuarios[index].uid])
 
   }
 
+  //Función para abrir la aplicación de WhatsApp e ir al chat con el usuario
   chatUser(data){
     window.location.href=`https://wa.me/34${data}`;
   }

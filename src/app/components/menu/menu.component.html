@@ -22,7 +22,7 @@
     <ion-label>Ex-Trabajadores</ion-label>
     <ion-icon slot="start" name="person-remove-outline"></ion-icon>
   </ion-item>
-  <ion-item detail="true" *ngIf="rol==='Auxiliar'" (click)="goHolidays()">
+  <ion-item detail="true" *ngIf="rol==='Auxiliar' && trabaja" (click)="goHolidays()">
     <ion-label>Vacaciones</ion-label>
     <ion-icon slot="start" name="airplane-outline"></ion-icon>
   </ion-item>
@@ -43,7 +43,7 @@
       <ion-card-title>Qué es</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      Skejul es una aplicación realizada como proyecto final de ciclo en el curso de Desarrollo de Aplicaciones Web por <br><strong>Adrián Segura Calaforra</strong>. <br>
+      Skejul es una aplicación de gestión de horarios realizada como proyecto final de ciclo en el curso de Desarrollo de Aplicaciones Web por <br><strong>Adrián Segura Calaforra</strong>. <br>
       <ng-lottie [options]="options"></ng-lottie>
     </ion-card-content>
   </ion-card>

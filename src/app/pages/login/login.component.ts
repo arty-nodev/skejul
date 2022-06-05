@@ -27,13 +27,14 @@ export class LoginComponent implements OnInit {
     path: 'assets/calendar.json'
   }
   constructor(private auth: AuthService, private interaction: InteractionService, private router: Router, private firestore: FirestoreService) {
-    this.auth.logout();
+   
     this.correo = '';
     this.password = '';
+    this.auth.logout();
   }
 
   ngOnInit() {
-
+    this.auth.logout();
     this.data = localStorage.getItem('info')
     this.newObject = JSON.parse(this.data);
     if (this.data != null) {
@@ -76,8 +77,6 @@ export class LoginComponent implements OnInit {
       }
     }).catch(error => {
       this.interaction.closeLoading();
-      console.log(error);
-
       this.interaction.presentToast("Usuario o contraseña inválidos")
     })
 

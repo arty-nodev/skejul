@@ -19,7 +19,14 @@ export class FirestoreService {
     return this.firestore.createId();
   }
 
-  //Recogemos una colección
+  
+  //Recogemos los trabajadores que trabajan
+  getAllCollection<type>(path: string) {
+    const collection = this.firestore.collection<type>(path);
+    return collection.valueChanges();
+  }
+
+  //Recogemos los trabajadores que trabajan
   getCollection<type>(path: string) {
     const collection = this.firestore.collection<type>(path, ref => ref.where("trabaja", "==", true));
     return collection.valueChanges();
@@ -49,7 +56,7 @@ export class FirestoreService {
         nombre: data.nombre,
         password: null,
         telefono: data.telefono,
-        firstLogin: false
+        firstLogin: data.firstLogin
       })
       .then(() => {
         return this.firestore.collection(path).doc<type>(uid).valueChanges();
@@ -70,9 +77,8 @@ export class FirestoreService {
 
   createNewEvent(path: string, uid: string, data: any) {
 
-    const collection = this.firestore.collection(path + '/' + uid + '/horarios');
-    console.log(data);
-    return collection.doc(data.title).set(data);
+ 
+    return this.firestore.collection(path + '/' + uid + '/horarios').doc(data.title).set(data)
 
   }
 

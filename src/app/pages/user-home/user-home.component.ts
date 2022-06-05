@@ -32,11 +32,14 @@ export class UserHomeComponent implements OnInit {
   user: any;
 
 
+
   calendar = {
     mode: 'month',
     currentDate: new Date()
 
   };
+
+  
 
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
@@ -73,7 +76,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   loadEvents(uid) {
-
+    this.eventSource = []
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
@@ -87,7 +90,12 @@ export class UserHomeComponent implements OnInit {
         this.myCalendar.loadEvents();
       })
     })
-    this.getHolidays(uid);
+
+    
+    if (this.rol == 'Auxiliar') {
+      
+      this.getHolidays(uid);
+    }
 
   }
 
@@ -103,24 +111,22 @@ export class UserHomeComponent implements OnInit {
   }
 
   onTimeSelected(ev) {
-    /*   console.log('Selected time:' + ev.selectedTime + ', hasEvents: ' +
-        (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
-      this.selectedDate = ev.selectedTime; */
+
 
   }
 
   onEventSelected(event) {
     if (this.rol == 'Gerente') {
-      console.log(event);
+    
 
       this.interaction.presentDeleteHorario(event, this.uidUser);
     }
-    console.log('Event selected: ' + event.startTime + ' - ' + event.endTime + ', ' + event.title);
+    
 
   }
 
   onCurrentDateChanged(event: Date) {
-    //console.log('Current date change: ' + event);
+  
 
   }
 
@@ -146,10 +152,15 @@ export class UserHomeComponent implements OnInit {
         let turno = newEvent.turno;
 
 
+
+
         this.addEvent(start, end, turno);
         this.eventSource.push(newEvent);
         this.myCalendar.loadEvents();
+
       }
+
+
     });
   }
 
@@ -167,7 +178,6 @@ export class UserHomeComponent implements OnInit {
   }
 
   getHolidays(uid) {
-    this.eventSource = [];
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
         let event: any = snap.payload.doc.data();
@@ -179,6 +189,8 @@ export class UserHomeComponent implements OnInit {
           event.allDay = true;
           event.allDayLabel = 'Turno';
           localStorage.setItem('holidays', JSON.stringify(event));
+    
+          
           this.eventSource.push(event)
           this.myCalendar.loadEvents();
         }

@@ -15,7 +15,7 @@ import { AES } from 'crypto-js';
 export class RegisterComponent implements OnInit {
 
   usuarios: Usuario[];
-  id_user: number[];
+  id_user_nums: number[];
 
   data: Usuario = {
     nombre: null,
@@ -30,17 +30,19 @@ export class RegisterComponent implements OnInit {
     trabaja: null,
     firstLogin: null
   }
-  decrypt:string;
+  decrypt: string;
 
   correo: string = '';
   psw: string = '';
-  cargos:string [];
+  cargos: string[];
 
 
   constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private menu: MenuController, private router: Router) {
-    this.usuarios = []; 
-    this.id_user = [];
+    this.usuarios = [];
+    this.id_user_nums = [];
     this.cargos = ['Gerente', 'Auxiliar'];
+
+    //Recogemos el id del usuario y a continuación su información
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -57,38 +59,37 @@ export class RegisterComponent implements OnInit {
     this.getUsuarios();
   }
 
+  //Se recogen los datos de todos los usuarios
   getUsuarios() {
-    this.database.getCollection<Usuario>('usuarios').subscribe((res) => {
+    this.database.getAllCollection<Usuario>('usuarios').subscribe((res) => {
       this.usuarios = res;
       this.usuarios.forEach(element => {
-        this.id_user.push(element.id_usuario);
+        this.id_user_nums.push(element.id_usuario);
       });
-      
     });
-
-   ;
-    
 
   }
 
+
+  //Se crea un nuevo usuario
   async crearNuevoUsuario() {
     this.interaction.presentLoading('Creando usuario...')
-    this.data.password = this.data.nombre+123;
-    console.log(this.data.password);
-    
+    //Aquí asignamos una contraseña por defecto que sería el nombre del usuario + 123
+    this.data.password = this.data.nombre + 123;
+    this.data.password.toLocaleLowerCase().trim();
+
+
+    //Se registra el usuario en la base de datos con el correo y contraseña
     const register = await this.auth.registrarUsuario(this.data).catch(error => {
       this.interaction.closeLoading();
       this.interaction.presentToast('Error al crear usuario');
 
     });
 
-    console.log(register);
-
+    //Si se ha registrado bien, se crea el documento del usuario
     if (register) {
       const path = 'usuarios';
       const uid = register.user.uid;
-      console.log(uid);
-
       this.data.uid = uid;
       this.data.password = null;
       this.data.trabaja = true;
@@ -98,7 +99,8 @@ export class RegisterComponent implements OnInit {
         this.login();
       });
 
-      //Buscar metodo refactor
+
+      //Reseteamos todos los campos
       this.data.nombre = null;
       this.data.apellidos = null;
       this.data.telefono = null;
@@ -107,26 +109,26 @@ export class RegisterComponent implements OnInit {
       this.data.id_usuario = null;
       this.data.password = null;
 
-   
+
     }
 
   }
 
+  //Volvemos a forzar el inicio de sesión del administrador
   async login() {
-
 
     const data = localStorage.getItem('info');
     const object = JSON.parse(data);
 
+    //Desencriptamos la contraseña para poder iniciar sesión y acabamos con el registro
     if (object != null) {
 
       this.decrypt = CryptoJS.AES.decrypt(object['password'], 'crypt').toString(CryptoJS.enc.Utf8);
 
       this.auth.login(object.correo, this.decrypt).then((res) => {
         if (res) {
-          console.log("respuesta ->", res);
-          window.top.location.reload();
           this.router.navigate(['register']);
+          window.top.location.reload();
           this.interaction.presentToast('Usuario creado con éxito');
           this.interaction.closeLoading();
         }
@@ -140,12 +142,13 @@ export class RegisterComponent implements OnInit {
 
   }
 
-   newID(){
-    let num = Math.round(Math.random() * (1000-1) + 1);
-    this.id_user.forEach(element => {  
+  //Función para generar un nuevo ID aleatorio
+  newID() {
+    let num = Math.round(Math.random() * (1000 - 1) + 1);
+    this.id_user_nums.forEach(element => {
       if (element == num) {
         this.newID();
-      } 
+      }
     });
     return num;
   }

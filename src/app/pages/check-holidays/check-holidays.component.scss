@@ -5,7 +5,8 @@
   }
 
   ion-toggle{
-    --background-checked: #ff7348 !important;
+    --background-checked: #ff7348;
+    --handle-background-checked: #fff;
   }
   ion-icon {
     font-size: 40px;

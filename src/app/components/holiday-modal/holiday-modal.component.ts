@@ -61,12 +61,11 @@ export class HolidayModalComponent implements OnInit {
 
   }
 
+  //Recogemos la información del usuario
   getEstado() {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
-          console.log('res -->', res);
-
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
@@ -79,6 +78,8 @@ export class HolidayModalComponent implements OnInit {
       }
     })
   }
+
+  //Opciones del calendario
 
   next() {
     this.myCalendar.slideNext();
@@ -96,6 +97,7 @@ export class HolidayModalComponent implements OnInit {
     this.viewTitle = tittle.toUpperCase();
   }
 
+  //El usuario solicita días de vacaciones
   solicitHoliday() {
 
     if (this.firstTime == 0) {
@@ -117,9 +119,9 @@ export class HolidayModalComponent implements OnInit {
 
     }
 
-    console.table(this.event);
   }
 
+  //Asignamos el día seleccionado al evento
   onTimeSelected(ev) {
 
     if (this.firstTime == 0) {
@@ -131,28 +133,19 @@ export class HolidayModalComponent implements OnInit {
 
   }
 
-
+  //Recogemos las vacaciones del usuario
   getHolidays(uid) {
     this.eventSource = [];
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
-        console.log(snap);
         let event: any = snap.payload.doc.data();
-
         if (event.petition == 0) {
           event.id = snap.payload.doc.id;
           this.idEvent = event.id;
-          /*  event.startTime = event.startTime.toDate();
-           event.endTime = event.endTime.toDate();
-    
-           console.log(event);
-           this.eventSource.push(event)
-           this.myCalendar.loadEvents(); */
+
         }
       })
     })
   }
-
-
 
 }

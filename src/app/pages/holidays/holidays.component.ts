@@ -62,7 +62,7 @@ export class HolidaysComponent implements OnInit {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
-          console.log('res -->', res);
+        
 
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
@@ -70,7 +70,7 @@ export class HolidaysComponent implements OnInit {
             this.getHolidays(this.uid)
           } else {
             this.rol = res.cargo;
-            console.log(this.uidUser);
+         
             this.getHolidays(this.uidUser)
           }
         })
@@ -85,20 +85,20 @@ export class HolidaysComponent implements OnInit {
   getHolidays(uid) {
     this.eventSource = []
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
-      console.log(colSnap.length);
+ 
 
       if (colSnap.length != 0) {
 
         colSnap.forEach(snap => {
           let event: any = snap.payload.doc.data();
 
-          console.log(event.petition);
+    
 
           if (event.petition == 1) {
             event.id = snap.payload.doc.id;
             event.startTime = event.startTime.toDate();
             event.endTime = event.endTime.toDate();
-            console.log(event);
+          
             if (event.startTime.getTime() > new Date().getTime()) {
               this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
               this.holidays.startTime = event.startTime.getDate() + ' - ' + event.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
@@ -131,8 +131,6 @@ export class HolidaysComponent implements OnInit {
 
     })
 
-    console.log(this.difference);
-    console.log(this.asked);
 
 
 
@@ -173,11 +171,7 @@ export class HolidaysComponent implements OnInit {
 
         let newEvent = result.data.event;
         let turno = newEvent.turno;
-        console.log(turno);
-
-
-        console.log(newEvent);
-
+    
       }
     });
   }

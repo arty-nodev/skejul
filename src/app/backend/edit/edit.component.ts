@@ -30,8 +30,10 @@ export class EditComponent implements OnInit {
   user:any;
   cargos:string [];
   constructor(private database: FirestoreService, private interaction: InteractionService, private auth: AuthService, private router: Router) {
+    
     this.cargos = ['Gerente', 'Auxiliar'];
-  
+
+    //Recogemos el id del usuario y a continuación su información
      this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -48,11 +50,12 @@ export class EditComponent implements OnInit {
     this.getUser();
   }
 
+
+  //Se imprimen los datos del usuario en los input de la vista
   async getUser() {
     this.interaction.presentLoading('Cargando datos...')
     this.info = localStorage.getItem('user'); 
     this.user = JSON.parse(this.info)
-    console.log(this.user);
        
     this.data.apellidos = this.user.apellidos;
     this.data.cargo = this.user.cargo;
@@ -66,12 +69,29 @@ export class EditComponent implements OnInit {
 
   }
 
+  //Función para cuando se edita el usuario
   editarUsuario() {
     this.interaction.presentLoading('Editando usuario...')
     this.database.editDoc<Usuario>('usuarios', this.data.uid, this.data).then(res => {
       if (res) {
-        console.log(res);
+    
         this.interaction.presentToast('Usuario editado con éxito');
+        this.interaction.closeLoading();
+
+      } else {
+        this.interaction.presentToast('Algo salió mal');
+        this.interaction.closeLoading();
+      }
+    })
+  }
+
+  //Función para cuando el usuario necesita de nuevo resetear la contraseña
+  resetPassword(){
+    this.data.firstLogin = true;
+    this.database.editDoc<Usuario>('usuarios', this.data.uid, this.data).then(res => {
+      if (res) {
+   
+        this.interaction.presentToast('Cambio de contraseña enviado');
         this.interaction.closeLoading();
 
       } else {

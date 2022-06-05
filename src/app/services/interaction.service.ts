@@ -39,6 +39,21 @@ export class InteractionService {
     await this.loading.dismiss();
   }
 
+  async presentAlertResetConfirmed() {
+    this.alert = await this.alertController.create({
+      header: 'Cambio de contraseña',
+      message: 'Por favor, revisa tu correo.El enlace expirará en unos minutos',
+      buttons: [
+        {
+          text: 'Aceptar',
+          id: 'confirm-button',
+        }
+      ]
+    });
+
+    await this.alert.present();
+
+  }
 
 
   async presentReset(data) {
@@ -54,11 +69,41 @@ export class InteractionService {
         }
       },
       {
-        text: 'Enviar correo',
+        text: 'Enviar correo (Revisar spam)',
         id: 'confirm-button',
         handler: () => {
-          console.log(data);
+
           this.auth.updatePassword(data);
+          this.presentAlertResetConfirmed();
+        }
+      }
+      ]
+    });
+
+    await this.alert.present();
+
+  }
+
+
+  async presentLiberar(data) {
+    this.alert = await this.alertController.create({
+      header: 'Liberar ID',
+      message: '¿Estás seguro que deseas liberar el ID?',
+      buttons: [{
+        text: 'Cancelar',
+        role: 'Cancel',
+        id: 'cancel-button',
+        handler: () => {
+          console.log('Cancelado');
+        }
+      },
+      {
+        text: 'Si, liberar',
+        id: 'confirm-button',
+        handler: () => {
+          data.id_usuario = null;
+
+          this.database.editDoc('usuarios', data.uid, data);
         }
       }
       ]
@@ -84,10 +129,10 @@ export class InteractionService {
           text: 'Si, continuar',
           id: 'confirm-button',
           handler: () => {
-            console.log(index);
+
             this.database.disableUser<Usuario>('usuarios', index.uid, false).then(res => {
               if (res) {
-                console.log(res);
+
                 this.presentToast('Usuario deshabilitado con éxito');
               } else {
                 this.presentToast('Algo salió mal');
@@ -102,7 +147,7 @@ export class InteractionService {
 
   }
 
-  async presentAlertHabilitar(index) {
+  async presentAlertHabilitar(index, id) {
     this.alert = await this.alertController.create({
       header: 'Dar de alta un usuario',
       message: 'El usuario será habilitado de nuevo.<br/><strong>¿Desea continuar?</strong>',
@@ -118,15 +163,17 @@ export class InteractionService {
           text: 'Si, continuar',
           id: 'confirm-button',
           handler: () => {
-            console.log(index);
+
             this.database.disableUser<Usuario>('usuarios', index.uid, true).then(res => {
               if (res) {
-                console.log(res);
+
                 this.presentToast('Usuario habilitado con éxito');
               } else {
                 this.presentToast('Algo salió mal');
               }
             })
+            index.id_usuario = id;
+            this.database.editDoc('usuarios', index.uid, index);
           }
         }
       ]
@@ -147,7 +194,7 @@ export class InteractionService {
           role: 'Cancel',
           id: 'cancel-button',
           handler: () => {
-            console.log('Cancelado');
+
           }
         }, {
           text: 'Si, continuar',
@@ -156,7 +203,7 @@ export class InteractionService {
 
             this.database.deleteEvent('usuarios', id, event.id).then(res => {
               if (res) {
-                console.log(res);
+
                 this.presentToast('Turno eliminado con éxito');
               } else {
                 this.presentToast('Algo salió mal');
@@ -172,7 +219,7 @@ export class InteractionService {
   }
 
   async presentHolidaysConfirm(path, uid, event, id) {
-    console.log(id);
+
     return new Promise(async (resolve) => {
       this.alert = await this.alertController.create({
         header: 'Solicitar vacaciones',

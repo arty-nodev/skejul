@@ -17,6 +17,8 @@ export class WelcomeComponent implements OnInit {
   usuario:any;
   totalUsuarios: any;
   saludo:string;
+  trabaja:boolean;
+  id_usuario:number;
   
 
   
@@ -24,6 +26,8 @@ export class WelcomeComponent implements OnInit {
     this.usuario = []; 
     this.totalUsuarios = [];
     this.getHour();
+    this.trabaja = true;
+    this.id_usuario = null;
    }
 
   ngOnInit() {
@@ -40,6 +44,8 @@ export class WelcomeComponent implements OnInit {
       if (res) {
         this.database.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
          this.usuario = res;
+         this.trabaja = res.trabaja;
+         this.id_usuario = res.id_usuario;
          
         })
 
@@ -67,7 +73,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   checkFirstTime(res) {
-    console.log(res);
+  
 
     if (res.firstLogin) {
       setTimeout(() => {
@@ -78,7 +84,6 @@ export class WelcomeComponent implements OnInit {
 
   getHour(){
     let time = new Date().getHours();
-    console.log(time);
 
     if (time >= 6 && time <= 13) {
       this.saludo = 'Buenos días,';
