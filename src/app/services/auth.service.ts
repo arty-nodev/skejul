@@ -10,35 +10,37 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class AuthService {
 
-  loginUser:boolean = false;
+  loginUser: boolean = false;
 
 
   constructor(private auth: AngularFireAuth, private firestore: FirestoreService) { }
 
-  login(correo: string, password: string){
-   return this.auth.signInWithEmailAndPassword(correo, password);
+  //Función para el login
+  login(correo: string, password: string) {
+    return this.auth.signInWithEmailAndPassword(correo, password);
   }
-
-  logout(){
+  //Función para el logout
+  logout() {
     this.auth.signOut();
   }
 
-  registrarUsuario(datos: Usuario){
+  //Función para registrar nuevo usuario
+  registrarUsuario(datos: Usuario) {
     return this.auth.createUserWithEmailAndPassword(datos.correo, datos.password);
   }
-  
-  estadoUsuario(){
+  //Función para ver el estado del usuario
+  estadoUsuario() {
     return this.auth.authState;
   }
-
-  updatePassword(data:any){
+  //Función para enviar el correo al usuario
+  updatePassword(data: any) {
     this.auth.sendPasswordResetEmail(data.correo).then(() => {
       this.firestore.editDoc('usuarios', data.uid, data);
     });
 
   }
-
-  checkLogin(){
+  //Función para ver si el usuario está con sesión activa 
+  checkLogin() {
     return this.loginUser;
   }
 }

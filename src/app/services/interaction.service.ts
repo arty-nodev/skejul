@@ -39,6 +39,7 @@ export class InteractionService {
     await this.loading.dismiss();
   }
 
+  //Alert para el reset de contraseña
   async presentAlertResetConfirmed() {
     this.alert = await this.alertController.create({
       header: 'Cambio de contraseña',
@@ -55,7 +56,7 @@ export class InteractionService {
 
   }
 
-
+//Alert para preguntar si quiere cambiar la contraseña
   async presentReset(data) {
     this.alert = await this.alertController.create({
       header: 'Cambio de contraseña',
@@ -84,7 +85,7 @@ export class InteractionService {
 
   }
 
-
+  //Alert para liberar el ID
   async presentLiberar(data) {
     this.alert = await this.alertController.create({
       header: 'Liberar ID',
@@ -113,6 +114,7 @@ export class InteractionService {
 
   }
 
+  //Alert para deshabilitar un usuario
   async presentAlertConfirm(index) {
     this.alert = await this.alertController.create({
       header: 'Dar de baja un usuario',
@@ -132,7 +134,6 @@ export class InteractionService {
 
             this.database.disableUser<Usuario>('usuarios', index.uid, false).then(res => {
               if (res) {
-
                 this.presentToast('Usuario deshabilitado con éxito');
               } else {
                 this.presentToast('Algo salió mal');
@@ -147,6 +148,7 @@ export class InteractionService {
 
   }
 
+  //Alert para volver a habilitar un usuario
   async presentAlertHabilitar(index, id) {
     this.alert = await this.alertController.create({
       header: 'Dar de alta un usuario',
@@ -183,7 +185,7 @@ export class InteractionService {
 
   }
 
-
+//Alert para borrar un horario
   async presentDeleteHorario(event, id) {
     this.alert = await this.alertController.create({
       header: 'Eliminar turno',
@@ -200,10 +202,8 @@ export class InteractionService {
           text: 'Si, continuar',
           id: 'confirm-button',
           handler: () => {
-
             this.database.deleteEvent('usuarios', id, event.id).then(res => {
               if (res) {
-
                 this.presentToast('Turno eliminado con éxito');
               } else {
                 this.presentToast('Algo salió mal');
@@ -218,6 +218,7 @@ export class InteractionService {
 
   }
 
+  //Alert para confirmar que las fechas son correctas
   async presentHolidaysConfirm(path, uid, event, id) {
 
     return new Promise(async (resolve) => {
@@ -241,22 +242,16 @@ export class InteractionService {
               this.database.askForHolidays<Usuario>(path, uid, event).then(res => {
                 if (res) return resolve(true);
               })
-
-
-
-
             }
           }
         ]
       });
-
-
       await this.alert.present();
-
     })
 
   }
 
+  //Alert para aceptar o denegar las vacaciones
   async presentSolicitHolidays(path: string, uid: string, data: any, value: any) {
     let opt;
 
@@ -294,9 +289,5 @@ export class InteractionService {
       });
       await this.alert.present();
     })
-
-
-
-
   }
 }

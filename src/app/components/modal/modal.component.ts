@@ -71,8 +71,6 @@ export class ModalComponent implements AfterViewInit {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
-          console.log('res -->', res);
-
           if (res && res.cargo != 'Gerente') {
 
             this.uid = res.uid;

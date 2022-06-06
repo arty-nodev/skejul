@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
     this.auth.logout();
     this.data = localStorage.getItem('info')
     this.newObject = JSON.parse(this.data);
+    //Si el localStorage no está vacío, inicia sesión automaticamente
     if (this.data != null) {
       this.decrypt = CryptoJS.AES.decrypt(this.newObject['password'], 'crypt').toString(CryptoJS.enc.Utf8);
       this.login(this.newObject.correo, this.decrypt)
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
   }
 
 
+  //Inicio de sesión
   async login(correo, password) {
 
     await this.interaction.presentLoading("Iniciando sesión");
@@ -52,9 +54,8 @@ export class LoginComponent implements OnInit {
     this.auth.login(correo, password).then(res => {
 
       if (res) {
-
+        //Encriptamos la contraseña
         if (this.data == null) {
-
           this.encrypt = CryptoJS.AES.encrypt(info['password'], 'crypt').toString();
           info['password'] = this.encrypt;
 

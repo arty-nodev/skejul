@@ -48,22 +48,19 @@ export class HolidaysComponent implements OnInit {
 
   ngOnInit() {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
+    //Comprobamos si las vacaciones están disponibles
     this.db.checkHolidays().subscribe(value => {
       this.available = value['isAvailable'];
 
-
     })
-
-
-
   }
 
+  //Recogemos el uid y la información del usuario
   getEstado() {
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
         
-
           if (res && res.cargo != 'Gerente') {
             this.rol = res.cargo;
             this.uid = res.uid;
@@ -82,18 +79,13 @@ export class HolidaysComponent implements OnInit {
     })
   }
 
+  //Recogemos las vacaciones del usuario
   getHolidays(uid) {
     this.eventSource = []
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
- 
-
       if (colSnap.length != 0) {
-
         colSnap.forEach(snap => {
           let event: any = snap.payload.doc.data();
-
-    
-
           if (event.petition == 1) {
             event.id = snap.payload.doc.id;
             event.startTime = event.startTime.toDate();
@@ -103,6 +95,7 @@ export class HolidaysComponent implements OnInit {
               this.difference = this.getDifferenceOfDays(new Date(), event.startTime);
               this.holidays.startTime = event.startTime.getDate() + ' - ' + event.startTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
               this.holidays.endTime = event.endTime.getDate() + ' - ' + event.endTime.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+              //Dependiendo del estado de la petición se carga una animación u otra
               this.options = {
                 ...this.options,
                 path: 'assets/yes.json'
@@ -138,6 +131,7 @@ export class HolidaysComponent implements OnInit {
 
   }
 
+  //Función para obtener la diferencia de días
   getDifferenceOfDays(start, end) {
 
     const date1 = new Date(start);
@@ -151,8 +145,8 @@ export class HolidaysComponent implements OnInit {
     return diffDays;
   }
 
+  //Se llama al modal para solicitar vacaciones
   async solicitar() {
-
     const modal = await this.modalCtrl.create({
       component: HolidayModalComponent,
       cssClass: 'cal-modal',
@@ -161,19 +155,7 @@ export class HolidaysComponent implements OnInit {
       },
       backdropDismiss: false
     })
-
     modal.present();
-
-    modal.onDidDismiss().then((result) => {
-
-      if (result.data && result.data.event) {
-
-
-        let newEvent = result.data.event;
-        let turno = newEvent.turno;
-    
-      }
-    });
   }
 
 

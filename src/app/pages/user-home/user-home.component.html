@@ -35,9 +35,9 @@
     </ng-template>
 
     <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
-        [startingDayMonth]="1" (onCurrentDateChanged)="onCurrentDateChanged($event)" [markDisabled]="markDisabled"
+        [startingDayMonth]="1"  [markDisabled]="markDisabled"
         (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)"
-        (onTimeSelected)="onTimeSelected($event)" step="30" [monthviewDisplayEventTemplate]="calendarView">
+         step="30" [monthviewDisplayEventTemplate]="calendarView">
 
     </calendar>
 </ion-content>

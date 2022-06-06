@@ -31,6 +31,7 @@ export class ExworkersComponent implements OnInit {
 
   }
 
+  //Recogemos los usuarios
   getUsuarios() {
 
     this.database.getAllCollection<Usuario>('usuarios').subscribe((res) => {  
@@ -47,6 +48,7 @@ export class ExworkersComponent implements OnInit {
     });
   }
 
+  //Volvemos a readmitir al usuario
   acceptUser(index) {
 
     if (this.usuarios[index].id_usuario == null) {
@@ -56,6 +58,8 @@ export class ExworkersComponent implements OnInit {
       this.interaction.presentAlertHabilitar(this.usuarios[index], this.usuarios[index].id_usuario);
     }
   }
+
+  //Ver información del usuario
 
   async infoUser(index) {
     localStorage.setItem('user', JSON.stringify(this.usuarios[index]));
@@ -68,6 +72,7 @@ export class ExworkersComponent implements OnInit {
     modal.present();
   }
 
+  //Generamos un nuevo ID en el caso que el ex-trabajador se quede sin ID
   newID() {
     let num = Math.round(Math.random() * (1000 - 1) + 1);
     this.id_user_nums.forEach(element => {

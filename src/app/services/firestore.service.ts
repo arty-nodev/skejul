@@ -20,13 +20,13 @@ export class FirestoreService {
   }
 
   
-  //Recogemos los trabajadores que trabajan
+  //Recogemos todos los usuarios 
   getAllCollection<type>(path: string) {
     const collection = this.firestore.collection<type>(path);
     return collection.valueChanges();
   }
 
-  //Recogemos los trabajadores que trabajan
+  //Recogemos los trabajadores activos
   getCollection<type>(path: string) {
     const collection = this.firestore.collection<type>(path, ref => ref.where("trabaja", "==", true));
     return collection.valueChanges();
@@ -43,6 +43,7 @@ export class FirestoreService {
     return this.firestore.collection(path).doc<type>(uid).valueChanges();
   }
 
+  //Editamos un usuario
   editDoc<type>(path: string, uid: string, data: any) {
     return this.firestore
       .collection(path)
@@ -63,6 +64,7 @@ export class FirestoreService {
       })
   }
 
+  //Deshabilitamos un usuario
   disableUser<type>(path: string, uid: string, value: boolean) {
     return this.firestore
       .collection(path)
@@ -75,17 +77,18 @@ export class FirestoreService {
       })
   }
 
+  //Se añade un nuevo turno al usuario
   createNewEvent(path: string, uid: string, data: any) {
-
- 
     return this.firestore.collection(path + '/' + uid + '/horarios').doc(data.title).set(data)
 
   }
 
+  //Se recogen los horarios del usuario
   getEvents(path: string, uid: string) {
     return this.firestore.collection(path + '/' + uid + '/horarios').snapshotChanges();
   }
 
+  //Borramos un turno del usuario
   deleteEvent(path: string, uid: string, id: string) {
     return this.firestore.collection(path).doc(uid).collection('horarios').doc(id).delete().then(() => {
       return true;
@@ -95,7 +98,7 @@ export class FirestoreService {
     })
   }
 
-
+//Habilitamos o deshabilitamos la opción de las vacaciones
   enableHolidays(data) {
     return this.firestore
       .collection('holidays')
@@ -104,16 +107,20 @@ export class FirestoreService {
         isAvailable: data
       })
   }
+
+  //Comprobamos el estado de las vacaciones
   checkHolidays() {
     return this.firestore.collection('holidays').doc('enableHolidays').valueChanges();
   }
 
+  //Recogemos las vacaciones del usuario
   getHolidays(path: string, uid: string) {
     return this.firestore.collection(path + '/' + uid + '/vacaciones').snapshotChanges();
   }
 
-  askForHolidays<type>(path: string, uid: string, data: any) {
 
+  //Dejamos la solicitud pendiente para el administrador
+  askForHolidays<type>(path: string, uid: string, data: any) {
     const collection = this.firestore.collection(path + '/' + uid + '/vacaciones');
     return collection.doc<type>(data.title).set(data).then(() => {
       return true;
@@ -124,21 +131,16 @@ export class FirestoreService {
 
   }
 
-
+  //Función para denegar o aprobar las vacaciones
   editHolidays<type>(path: string, uid: string, info: number) {
     let id: string;
-
-
     const collectionRef = this.firestore
       .collection(path)
       .doc(uid).collection('vacaciones').snapshotChanges();
-
-
     collectionRef.subscribe(value => {
       value.forEach(element => {
         if (!element.payload.doc.data().petition) {
           id = element.payload.doc.id;
-
           return this.firestore
             .collection(path)
             .doc(uid).collection('vacaciones').doc(id).update({
@@ -151,9 +153,8 @@ export class FirestoreService {
     })
   }
 
+  //Borramos las vacaciones
   deleteHoliday<type>(path: string, uid: string, id: string) {
-
-
     this.getHolidays(path, uid).subscribe(res => {
       if (res.length != 0) {
         return this.firestore.collection(path).doc<type>(uid).collection('vacaciones').doc(id).delete().then(() => {
@@ -166,10 +167,6 @@ export class FirestoreService {
       } else return;
 
     })
-
-
-
-
   }
 
 }

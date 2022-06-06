@@ -76,7 +76,9 @@ export class RegisterComponent implements OnInit {
     this.interaction.presentLoading('Creando usuario...')
     //Aquí asignamos una contraseña por defecto que sería el nombre del usuario + 123
     this.data.password = this.data.nombre + 123;
-    this.data.password.toLocaleLowerCase().trim();
+    this.data.password = this.data.password.toLowerCase().trim();
+
+    
 
 
     //Se registra el usuario en la base de datos con el correo y contraseña
@@ -96,6 +98,7 @@ export class RegisterComponent implements OnInit {
       this.data.id_usuario = this.newID();
       this.data.firstLogin = true;
       await this.database.createDoc(this.data, path, uid).then(() => {
+        this.router.navigate(['register']);
         this.login();
       });
 
@@ -127,8 +130,8 @@ export class RegisterComponent implements OnInit {
 
       this.auth.login(object.correo, this.decrypt).then((res) => {
         if (res) {
-          this.router.navigate(['register']);
           window.top.location.reload();
+          this.router.navigate(['register']);
           this.interaction.presentToast('Usuario creado con éxito');
           this.interaction.closeLoading();
         }

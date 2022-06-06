@@ -39,13 +39,12 @@ export class UserHomeComponent implements OnInit {
 
   };
 
-  
-
 
   @ViewChild(CalendarComponent) myCalendar: CalendarComponent;
   constructor(private db: FirestoreService, private auth: AuthService, private modalCtrl: ModalController, private route: ActivatedRoute, private router: Router, private interaction: InteractionService) {
     this.info = localStorage.getItem('user');
     this.user = JSON.parse(this.info)
+    //Recigemos los datos del usuario
     this.auth.estadoUsuario().subscribe(res => {
       if (res) {
         this.db.getDoc<Usuario>('usuarios', res.uid).subscribe(res => {
@@ -75,6 +74,7 @@ export class UserHomeComponent implements OnInit {
     this.uidUser = this.route.snapshot.paramMap.get('uid');
   }
 
+  //Cargamos los horarios del usuario
   loadEvents(uid) {
     this.eventSource = []
     this.db.getEvents('usuarios', uid).subscribe(colSnap => {
@@ -85,20 +85,20 @@ export class UserHomeComponent implements OnInit {
         event.startTime = event.startTime.toDate();
         event.endTime = event.endTime.toDate();
         event.title = event.turno;
-
         this.eventSource.push(event)
         this.myCalendar.loadEvents();
       })
     })
 
-    
+
     if (this.rol == 'Auxiliar') {
-      
+
       this.getHolidays(uid);
     }
 
   }
 
+  //Funciones del calendario
   next() {
     this.myCalendar.slideNext();
   }
@@ -110,29 +110,17 @@ export class UserHomeComponent implements OnInit {
     this.viewTitle = tittle.toUpperCase();
   }
 
-  onTimeSelected(ev) {
-
-
-  }
-
+  //Funcion para borrar el turno
   onEventSelected(event) {
     if (this.rol == 'Gerente') {
-    
-
       this.interaction.presentDeleteHorario(event, this.uidUser);
     }
-    
 
   }
 
-  onCurrentDateChanged(event: Date) {
-  
 
-  }
-
+  //Se abre el modal para añadir nuevos turnos
   async openCalModal() {
-
-
     const modal = await this.modalCtrl.create({
       component: ModalComponent,
       cssClass: 'cal-modal',
@@ -144,15 +132,10 @@ export class UserHomeComponent implements OnInit {
     modal.onDidDismiss().then((result) => {
 
       if (result.data && result.data.event) {
-
-
         let newEvent = result.data.event;
         let start = newEvent.startTime;
         let end = newEvent.endTime;
         let turno = newEvent.turno;
-
-
-
 
         this.addEvent(start, end, turno);
         this.eventSource.push(newEvent);
@@ -164,19 +147,19 @@ export class UserHomeComponent implements OnInit {
     });
   }
 
+  //Añadimos nuevo evento a la bbdd
   async addEvent(startTime, endTime, turno) {
-
     const event = {
       turno: turno,
       startTime: startTime,
       endTime: endTime,
       allDay: false
     };
-
     this.db.createNewEvent('usuarios', this.uidUser, event);
 
   }
 
+  //Recogemos las vacaciones del usuario
   getHolidays(uid) {
     this.db.getHolidays('usuarios', uid).subscribe(colSnap => {
       colSnap.forEach(snap => {
@@ -189,15 +172,11 @@ export class UserHomeComponent implements OnInit {
           event.allDay = true;
           event.allDayLabel = 'Turno';
           localStorage.setItem('holidays', JSON.stringify(event));
-    
-          
           this.eventSource.push(event)
           this.myCalendar.loadEvents();
         }
       })
     })
   }
-
-
 
 }
