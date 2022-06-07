@@ -29,7 +29,18 @@ export class AdminHomeComponent implements OnInit {
   getUsuarios() {
     this.database.getCollection<Usuario>('usuarios').subscribe((res) => {  
       this.usuarios = res;
-      
+      this.usuarios.sort((a, b) => {
+        let fa = a.nombre.toLowerCase(),
+            fb = b.nombre.toLowerCase();
+    
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    });
     });
    
   }
